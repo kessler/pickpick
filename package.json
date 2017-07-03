@@ -1,7 +1,7 @@
 {
-  "name": "experiments",
+  "name": "@reason/pickpick",
   "version": "1.0.0",
-  "description": "A/B test and experimentation engine",
+  "description": "A/B testing engine",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

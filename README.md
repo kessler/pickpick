@@ -1,6 +1,6 @@
 # Experiments Engine
 
-An engine for running a/b tests (aka experiments)
+A/B testing engine (aka experiments)
 
 - An experiement is composed of variations
 - Each variation can have an arbitraty integer weight
