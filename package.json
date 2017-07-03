@@ -1,0 +1,19 @@
+{
+  "name": "experiments",
+  "version": "1.0.0",
+  "description": "A/B test and experimentation engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "debug": "^2.6.8",
+    "loadbalance": "^0.2.7",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "chai": "^4.0.2"
+  }
+}
