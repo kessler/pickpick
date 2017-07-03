@@ -36,7 +36,7 @@ describe('Experiment picks a variation', () => {
 		expect(variationCounter.get(3)).to.equal(25)
 	})
 
-	it.only('based on targeting', () => {
+	it('based on targeting', () => {
 		let experiment = Experiment.create({ 
 			variations: [ 1, 2 ],
 			targeting: Targeting.create({ geo: 'US' })
