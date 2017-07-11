@@ -3,6 +3,7 @@
 const { expect } = require('chai')
 const { Experiment, Variation, Targeting } = require('../index')
 const loadbalance = require('loadbalance')
+const Counter = require('./util/Counter')
 
 describe('Experiment picks a variation', () => {
 	let traffic, variationCounter, visitorCounter
@@ -10,7 +11,11 @@ describe('Experiment picks a variation', () => {
 	it('based on even weights', () => {
 
 		let experiment = Experiment.create({
-			variations: [1, 2, 3]
+			variations: [
+				Variation.create({ object: 1, weight: 1 }),
+				Variation.create({ object: 2, weight: 1 }),
+				Variation.create({ object: 3, weight: 1 })
+			]
 		})
 
 		runExperiment(experiment, 100)
@@ -36,21 +41,30 @@ describe('Experiment picks a variation', () => {
 		expect(variationCounter.get(3)).to.equal(25)
 	})
 
-	it('based on targeting', () => {
-		let experiment = Experiment.create({
-			variations: [1, 2],
-			targeting: Targeting.create({ geo: 'US' })
-		})
+	it('variation input can be written in a short form, if weights are even', () => {
+		let variations = [1, 2, 3]
+		let experiment = Experiment.create({ variations })
+		let expectedWeights = [1, 1, 1]
 
-		runExperiment(experiment, 100)
-
-		expect(variationCounter.get(1)).to.equal(25)
-		expect(variationCounter.get(2)).to.equal(25)
-		expect(variationCounter.get(3)).to.be.undefined
-		expect(variationCounter.get(4)).to.be.undefined
+		let count = 0
+		for (let variation of experiment) {
+			expect(variation).to.have.property('weight', expectedWeights[count])
+			expect(variation).to.have.property('object', variations[count])
+			count++
+		}
+		expect(count).to.equal(3)
 	})
 
-	it.only('mutually exclusing sub experiments', () => {
+	it('targeting input can be written in short form using javascript object', () => {
+		let variations = [1, 2, 3]
+		let targeting = { geo: 'US' }
+		let experiment = Experiment.create({ targeting, variations })
+
+		expect(experiment.targeting).to.be.instanceOf(Targeting)
+		expect(experiment.targeting.has('geo', 'US')).to.be.true
+	})
+
+	it.skip('mutually exclusing sub experiments', () => {
 		traffic = loadbalance.roundRobin([
 			{ geo: 'US' },
 			{ geo: 'MX' }
@@ -58,12 +72,12 @@ describe('Experiment picks a variation', () => {
 
 		let e1 = Experiment.create({
 			variations: [1, 2],
-			targeting: Targeting.create({ geo: 'US' })
+			targeting: { geo: 'US' }
 		})
 
 		let e2 = Experiment.create({
 			variations: [3, 4],
-			targeting: Targeting.create({ geo: 'MX' })
+			targeting: { geo: 'MX' }
 		})
 
 		let e3 = Experiment.create({
@@ -75,7 +89,7 @@ describe('Experiment picks a variation', () => {
 		})
 
 		runExperiment(experiment, 10)
-		console.log(variationCounter)
+
 		expect(variationCounter.get(1)).to.equal(15)
 		expect(variationCounter.get(2)).to.equal(15)
 		expect(variationCounter.get(3)).to.equal(15)
@@ -118,14 +132,8 @@ describe('Experiment picks a variation', () => {
 
 	function runExperiment(experiment, size) {
 		for (let i = 0; i < size; i++) {
-			let visitor = traffic.pick()
-			console.log('-------------------------visit-----------------------\n')
-			let variation = experiment.pick(visitor)
-			if (!variation) {
-				console.log('no variation', visitor)
-			}
+			let variation = experiment.pick()
 			variationCounter.count(variation)
-			visitorCounter.count(visitor)
 		}
 	}
 })
