@@ -30,6 +30,7 @@ describe('Targeting',  () => {
 
 		describe('all conditions', () => {
 			let targeting = new Targeting({ geo: matchers.specific('US'), page: matchers.specific('buy') })
+			console.log(targeting.sortedKey)
 			let usVisitor = { geo: 'US' , page: 'buy'}
 			let ilVisitor = { geo: 'IL' , page: 'buy'}
 
