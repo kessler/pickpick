@@ -2,10 +2,6 @@
 
 A/B testing engine (aka experiments)
 
-- An experiement is composed of variations
-- Each variation can have an arbitraty integer weight
-- An experiment may return nothing from pick(), meaning that the provided targeting did not match any variation or sub experiments variations
-
 ## Quick and dirty example
 
 Let's say we have a website with two pages `buy` and `index` and we want to run 3 experiments:
