@@ -51,7 +51,7 @@ if (!experiment) {
 }
 ```
 
-### integrating with express
+## integrating with express
 This exampe is NOT meant to work as is. For example there is no `page` field in express request object
 
 ```js
