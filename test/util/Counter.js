@@ -37,4 +37,12 @@ class Counter {
 	}
 }
 
+function spaces(size) {
+	let r = ''
+	for (let i = 0; i < size; i++) {
+		r += ' '
+	}
+	return r
+}
+
 module.exports = Counter

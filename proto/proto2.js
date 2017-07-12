@@ -142,9 +142,8 @@ function run() {
 
 	console.log('done')
 }
+
 run()
-
-
 
 function spaces(size) {
 	let r = ''

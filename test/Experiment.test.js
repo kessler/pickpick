@@ -44,15 +44,16 @@ describe('Experiment picks a variation', () => {
 	it('variation input can be written in a short form, if weights are even', () => {
 		let variations = [1, 2, 3]
 		let experiment = Experiment.create({ variations })
-		let expectedWeights = [1, 1, 1]
+		let experimentVariations = Array.from(experiment)
 
-		let count = 0
-		for (let variation of experiment) {
-			expect(variation).to.have.property('weight', expectedWeights[count])
-			expect(variation).to.have.property('object', variations[count])
-			count++
-		}
-		expect(count).to.equal(3)
+		expect(experimentVariations[0]).to.have.property('weight', 1)
+		expect(experimentVariations[0]).to.have.property('object', 1)
+
+		expect(experimentVariations[1]).to.have.property('weight', 1)
+		expect(experimentVariations[1]).to.have.property('object', 2)
+
+		expect(experimentVariations[2]).to.have.property('weight', 1)
+		expect(experimentVariations[2]).to.have.property('object', 3)
 	})
 
 	it('targeting input can be written in short form using javascript object', () => {
@@ -62,40 +63,6 @@ describe('Experiment picks a variation', () => {
 
 		expect(experiment.targeting).to.be.instanceOf(Targeting)
 		expect(experiment.targeting.has('geo', 'US')).to.be.true
-	})
-
-	it.skip('mutually exclusing sub experiments', () => {
-		traffic = loadbalance.roundRobin([
-			{ geo: 'US' },
-			{ geo: 'MX' }
-		])
-
-		let e1 = Experiment.create({
-			variations: [1, 2],
-			targeting: { geo: 'US' }
-		})
-
-		let e2 = Experiment.create({
-			variations: [3, 4],
-			targeting: { geo: 'MX' }
-		})
-
-		let e3 = Experiment.create({
-			variations: [5, 6]
-		})
-
-		let experiment = Experiment.create({
-			variations: [e1, e2, e3]
-		})
-
-		runExperiment(experiment, 10)
-
-		expect(variationCounter.get(1)).to.equal(15)
-		expect(variationCounter.get(2)).to.equal(15)
-		expect(variationCounter.get(3)).to.equal(15)
-		expect(variationCounter.get(4)).to.equal(15)
-		expect(variationCounter.get(5)).to.equal(15)
-		expect(variationCounter.get(6)).to.equal(15)
 	})
 
 	beforeEach(() => {

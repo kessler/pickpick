@@ -21,7 +21,8 @@ let e3 = Experiment.create({
 })
 
 // now create a container:
-let container = ExperimentContainer.create([ e1, e2, e3 ])
+let experiments = [e1, e2, e3]
+let container = ExperimentContainer.create({ experiments })
 
 // simulate a visitor that needs a determination about which variation of which experiment he gets:
 let visitor = { page: 'buy' }
