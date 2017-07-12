@@ -1,6 +1,6 @@
 {
   "name": "@reason/pickpick",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A/B testing engine",
   "main": "index.js",
   "scripts": {
