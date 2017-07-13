@@ -146,7 +146,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			expect(JSON.stringify(json)).to.deep.equal(JSON.stringify(container))
 		})
 
-		it('deserializes from json', () => {
+		it.skip('deserializes from json', () => {
 			let experiments = [{
 				name: 'e1',
 				variations: [1, 2, 3],
