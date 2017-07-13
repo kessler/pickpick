@@ -65,6 +65,45 @@ describe('Experiment picks a variation', () => {
 		expect(experiment.targeting.has('geo', 'US')).to.be.true
 	})
 
+	it('can be serialized into json', () => {
+		let variations = [1, 2, 3]
+		let targeting = { geo: 'US' }
+		let experiment = Experiment.create({ targeting, variations, name: 'test' })
+		let json = experiment.toJSON(experiment)
+
+		expect(json).to.have.deep.property('variations', [
+			{ object: 1, weight: 1},
+			{ object: 2, weight: 1},
+			{ object: 3, weight: 1}
+		])
+
+		expect(json).to.have.deep.property('targeting', { geo: 'US' })
+		expect(json).to.have.property('name', 'test')
+
+		expect(JSON.stringify(experiment)).to.equal(JSON.stringify(json))
+	})
+
+	it('can be deserialized from json', () => {
+		let variations = [1, 2, 3]
+		let targeting = { geo: 'US' }
+		let experiment = Experiment.create({ targeting, variations, name: 'test' })
+		let json = JSON.stringify(experiment)
+
+		let deserializedExperiment = Experiment.create(JSON.parse(json))
+
+		expect(deserializedExperiment).to.have.property('name', 'test')
+
+		let deserializedVariations = Array.from(deserializedExperiment)
+		
+		expect(deserializedVariations).to.deep.equal([
+			Variation.create({ object: 1, weight: 1}),
+			Variation.create({ object: 2, weight: 1}),
+			Variation.create({ object: 3, weight: 1})
+		])
+
+		expect(deserializedExperiment.targeting).to.deep.equal(Targeting.create({ geo: 'US' }))
+	})
+
 	beforeEach(() => {
 		traffic = loadbalance.roundRobin([
 			{ geo: 'US', page: 'buy' },

@@ -7,6 +7,17 @@ const Counter = require('./util/Counter')
 describe('ExperimentContainer is a container for experiments', () => {
 	let container, variations
 
+	it('when constructing a container, experiments can be defined using short json form', () => {
+		let container = ExperimentContainer.create({})
+
+		container.add({ variations: [1, 2, 3], targeting: { geo: 'US' }, name: 'e1' })
+
+		let experiments = Array.from(container)
+
+		expect(experiments).to.have.length(1)
+		expect(experiments[0]).to.deep.equal(Experiment.create({ variations: [1, 2, 3], targeting: { geo: 'US' }, name: 'e1' }))
+	})
+
 	it('which can be added to the container using add()', () => {
 		let e1 = Experiment.create({ variations })
 		container.add(e1)
@@ -89,6 +100,67 @@ describe('ExperimentContainer is a container for experiments', () => {
 				expect(counter.get(e2) / SIZE).to.be.gt(0.7)
 				expect(counter.get(e2) / SIZE).to.be.lt(0.9)
 			})
+		})
+	})
+
+	describe('serialization/deserialization to json', () => {
+		it('serializes to json', () => {
+			let experiments = [{
+				name: 'e1',
+				variations: [1, 2, 3],
+				targeting: { geo: 'US' }
+			}, {
+				name: 'e2',
+				variations: [1, 2, 3],
+				targeting: { geo: 'US' }
+			}]
+
+			let container = ExperimentContainer.create({ experiments })
+
+			let json = container.toJSON()
+			
+			expect(json).to.have.deep.property('experiments', [{
+				object: {
+					name: 'e1',
+					variations: [
+						{ object: 1, weight: 1 },
+						{ object: 2, weight: 1 },
+						{ object: 3, weight: 1 }
+					],
+					targeting: { geo: 'US' }
+				},
+				weight: 1
+			}, {
+				object: {
+					name: 'e2',
+					variations: [
+						{ object: 1, weight: 1 },
+						{ object: 2, weight: 1 },
+						{ object: 3, weight: 1 }
+					],
+					targeting: { geo: 'US' }
+				},
+				weight: 1
+			}])
+
+			expect(JSON.stringify(json)).to.deep.equal(JSON.stringify(container))
+		})
+
+		it('deserializes from json', () => {
+			let experiments = [{
+				name: 'e1',
+				variations: [1, 2, 3],
+				targeting: { geo: 'US' }
+			}, {
+				name: 'e2',
+				variations: [1, 2, 3],
+				targeting: { geo: 'US' }
+			}]
+
+			let container = ExperimentContainer.create({ experiments })
+			let json = JSON.parse(JSON.stringify(container))
+			console.log(json)
+			//let deserializedContainer = ExperimentContainer.create()
 		})
 	})
 
