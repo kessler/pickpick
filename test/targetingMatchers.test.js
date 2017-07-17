@@ -4,13 +4,22 @@ const { expect } = require('chai')
 const { matchers } = require('../index')
 
 describe('Matchers are a bunch of stateful operators', () => {
-	it('isExactly() returns true if the tested value matches the initial value exactly', () => {
+	it('isExactly() returns true if the tested value matches the initial value exactly (===)', () => {
 		expect(matchers.isExactly('US').match('US')).to.be.true
 		expect(matchers.isExactly('MX').match('US')).to.be.false
 
 		let obj1 = {}
 		expect(matchers.isExactly(obj1).match(obj1)).to.be.true
 		expect(matchers.isExactly(obj1).match({})).to.be.false
+	})
+
+	it('isNot() returns true if the tested value does not match the initial value exactly (===)', () => {
+		expect(matchers.isNot('US').match('US')).to.be.false
+		expect(matchers.isNot('MX').match('US')).to.be.true
+
+		let obj1 = {}
+		expect(matchers.isNot(obj1).match(obj1)).to.be.false
+		expect(matchers.isNot(obj1).match({})).to.be.true
 	})
 
 	it('isAny() returns true for any tested value', () => {
