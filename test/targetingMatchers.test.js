@@ -37,6 +37,22 @@ describe('Matchers are a bunch of stateful operators', () => {
 		expect(matchers.isIn([1, 2, 3]).match(4)).to.be.false
 	})
 
+	it.only('and returns true if tested value matches all conditions (expressed as matchers) in the initial value', () => {
+		expect(matchers.and('US', 'MX').match('US')).to.be.false // this will forever be false
+
+		expect(matchers.and('!US', '!MX').match('IL')).to.be.true
+		expect(matchers.and('!US', '!MX').match('US')).to.be.false
+
+		expect(matchers.and('!US', ['IL', 'MX']).match('IL')).to.be.true
+		expect(matchers.and('!US', ['IL', 'MX']).match('GB')).to.be.false
+
+		expect(matchers.and('!US', '!IL', '!MX').match('GB')).to.be.true
+		expect(matchers.and('!US', '!IL', '!MX').match('MX')).to.be.false
+
+		expect(matchers.and('!US', 'MX').match('MX')).to.be.true // should never do this, it's exactly like isExactly(mx)
+		expect(matchers.and('!US', 'MX').match('IL')).to.be.false
+	})
+
 	describe('valueOf() takes a string and returns an appropriate matcher for it', () => {
 		it('returns an isAny matcher for \'*\'', () => {
 			let matcher = matchers.valueOf('*')
