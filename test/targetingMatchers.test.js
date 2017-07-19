@@ -37,7 +37,7 @@ describe('Matchers are a bunch of stateful operators', () => {
 		expect(matchers.isIn([1, 2, 3]).match(4)).to.be.false
 	})
 
-	it.only('and returns true if tested value matches all conditions (expressed as matchers) in the initial value', () => {
+	it('and returns true if tested value matches all conditions (expressed as matchers) in the initial value', () => {
 		expect(matchers.and('US', 'MX').match('US')).to.be.false // this will forever be false
 
 		expect(matchers.and('!US', '!MX').match('IL')).to.be.true
