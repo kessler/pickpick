@@ -11,6 +11,7 @@ describe('Experiment picks a variation', () => {
 	it('based on even weights', () => {
 
 		let experiment = Experiment.create({
+			id: 'foo-id',
 			variations: [
 				Variation.create({ object: 1, weight: 1 }),
 				Variation.create({ object: 2, weight: 1 }),
@@ -27,6 +28,7 @@ describe('Experiment picks a variation', () => {
 
 	it('based on uneven weights', () => {
 		let experiment = Experiment.create({
+			id: 'foo-id',
 			variations: [
 				Variation.create({ object: 1, weight: 50 }),
 				Variation.create({ object: 2, weight: 25 }),
@@ -43,7 +45,7 @@ describe('Experiment picks a variation', () => {
 
 	it('variation input can be written in a short form, if weights are even', () => {
 		let variations = [1, 2, 3]
-		let experiment = Experiment.create({ variations })
+		let experiment = Experiment.create({ id: 'foo-id', variations })
 		let experimentVariations = Array.from(experiment)
 
 		expect(experimentVariations[0]).to.have.property('weight', 1)
@@ -59,7 +61,7 @@ describe('Experiment picks a variation', () => {
 	it('targeting input can be written in short form using javascript object', () => {
 		let variations = [1, 2, 3]
 		let targeting = { geo: 'US' }
-		let experiment = Experiment.create({ targeting, variations })
+		let experiment = Experiment.create({ id: 'foo-id', targeting, variations })
 
 		expect(experiment.targeting).to.be.instanceOf(Targeting)
 		expect(experiment.targeting.has('geo', 'US')).to.be.true
@@ -68,7 +70,7 @@ describe('Experiment picks a variation', () => {
 	it('can be serialized into json', () => {
 		let variations = [1, 2, 3]
 		let targeting = { geo: 'US' }
-		let experiment = Experiment.create({ targeting, variations, name: 'test' })
+		let experiment = Experiment.create({ id: 'foo-id', targeting, variations, name: 'test' })
 		let json = experiment.toJSON(experiment)
 
 		expect(json).to.have.deep.property('variations', [
@@ -86,7 +88,7 @@ describe('Experiment picks a variation', () => {
 	it('can be deserialized from json', () => {
 		let variations = [1, 2, 3]
 		let targeting = { geo: 'US' }
-		let experiment = Experiment.create({ targeting, variations, name: 'test' })
+		let experiment = Experiment.create({ id: 'foo-id', targeting, variations, name: 'test' })
 		let json = JSON.stringify(experiment)
 
 		let deserializedExperiment = Experiment.create(JSON.parse(json))
@@ -94,7 +96,7 @@ describe('Experiment picks a variation', () => {
 		expect(deserializedExperiment).to.have.property('name', 'test')
 
 		let deserializedVariations = Array.from(deserializedExperiment)
-		
+
 		expect(deserializedVariations).to.deep.equal([
 			Variation.create({ object: 1, weight: 1}),
 			Variation.create({ object: 2, weight: 1}),
