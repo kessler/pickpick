@@ -37,6 +37,16 @@ describe('ExperimentContainer is a container for experiments', () => {
 		expect(targetingFeatures).to.include('geo')
 	})
 
+	it('so one can check if experiment is a part of it by name', () => {
+		let e1 = Experiment.create({ name: 'foo', variations, targeting: { page: 'buy' } })
+		let e2 = Experiment.create({ name: 'bar', variations, targeting: { geo: 'MX' } })
+
+		container.add(e1, e2)
+		expect(container.has('foo')).to.be.true
+		expect(container.has('bar')).to.be.true
+		expect(container.has('not-foo-or-bar')).to.be.false
+	})
+
 	describe('that lets a user pick an experiment that matches a targeting experssion', () => {
 		it('using the pick(targeting) method', () => {
 
@@ -118,7 +128,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			let container = ExperimentContainer.create({ experiments })
 
 			let json = container.toJSON()
-			
+
 			expect(json).to.have.deep.property('experiments', [{
 				object: {
 					name: 'e1',
