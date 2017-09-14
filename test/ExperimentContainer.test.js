@@ -45,15 +45,22 @@ describe('ExperimentContainer is a container for experiments', () => {
 	it('so one can check if experiment is a part of it', () => {
 		let e1 = Experiment.create({ id: 'foo-id', name: 'foo', variations, targeting: { page: 'buy' } })
 		let e2 = Experiment.create({ id: 'bar-id', name: 'bar', variations, targeting: { geo: 'MX' } })
-		let e3 = Experiment.create({ id: 'zoo-id', name: 'zoo', variations, targeting: { geo: 'IT' } })
-
-		let e4 = { id: 'boo-id', name: 'boo', variations, targeting: { geo: 'US' } }
-
 		container.add(e1, e2)
+
+		let e3 = Experiment.create({ id: 'roo-id', name: 'roo', variations, targeting: { geo: 'FR' } })
+		let e4 = Experiment.create({ id: 'goo-id', name: 'goo', variations, targeting: { geo: 'BR' } })
+		container.add(Variation.create({ object: e3, weight: 20 }), Variation.create({ object: e4, weight: 80 }))
+
+		let e5 = Experiment.create({ id: 'zoo-id', name: 'zoo', variations, targeting: { geo: 'IT' } })
+
+		let e6 = { id: 'boo-id', name: 'boo', variations, targeting: { geo: 'US' } }
+
 		expect(container.has(e1)).to.be.true
 		expect(container.has(e2)).to.be.true
-		expect(container.has(e3)).to.be.false
-		expect(() => { container.has(e4) }).to.throw
+		expect(container.has(e3)).to.be.true
+		expect(container.has(e4)).to.be.true
+		expect(container.has(e5)).to.be.false
+		expect(() => { container.has(e6) }).to.throw
 	})
 
 	it('and have a unique id', () => {
@@ -65,6 +72,9 @@ describe('ExperimentContainer is a container for experiments', () => {
 		}).to.throw()
 		expect(() => {
 			container.add(e1, e2)
+		}).to.throw()
+		expect(() => {
+			container.add(Variation.create({ object: e1, weight: 20 }), Variation.create({ object: e2, weight: 80 }))
 		}).to.throw()
 	})
 
