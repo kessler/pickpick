@@ -42,14 +42,18 @@ describe('ExperimentContainer is a container for experiments', () => {
 		expect(targetingFeatures).to.include('geo')
 	})
 
-	it('so one can check if experiment is a part of it by id', () => {
+	it('so one can check if experiment is a part of it', () => {
 		let e1 = Experiment.create({ id: 'foo-id', name: 'foo', variations, targeting: { page: 'buy' } })
 		let e2 = Experiment.create({ id: 'bar-id', name: 'bar', variations, targeting: { geo: 'MX' } })
+		let e3 = Experiment.create({ id: 'zoo-id', name: 'zoo', variations, targeting: { geo: 'IT' } })
+
+		let e4 = { id: 'boo-id', name: 'boo', variations, targeting: { geo: 'US' } }
 
 		container.add(e1, e2)
-		expect(container.has('foo-id')).to.be.true
-		expect(container.has('bar-id')).to.be.true
-		expect(container.has('not-foo-or-bar')).to.be.false
+		expect(container.has(e1)).to.be.true
+		expect(container.has(e2)).to.be.true
+		expect(container.has(e3)).to.be.false
+		expect(() => { container.has(e4) }).to.throw
 	})
 
 	it('and have a unique id', () => {
