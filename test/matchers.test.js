@@ -125,7 +125,7 @@ describe('Matchers are a bunch of stateful operators', () => {
 			function test(something) {
 				expect(() => {
 					matchers.valueOf(something)
-				}).to.throw(`unsupported type: ${typeof(something)}`)	
+				}).to.throw(`unsupported type: ${typeof(something)}`)
 			}
 		})
 	})
