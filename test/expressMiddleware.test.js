@@ -9,13 +9,15 @@ describe('expressMiddleware can be used to run an experminets container inside a
 			let e1Variations = [{ price: 1 }, { price: 2 }]
 			let e1 = Experiment.create({
 				name: 'e1',
+				id: 'foo-id',
 				variations: e1Variations,
 				targeting: { geo: 'US', url: '/buy' }
 			})
 
-			let e2Variations = [{ buttonColor: 1, buttonColor: 2 }]
+			let e2Variations = [{ buttonColor: 1, buttonTextColor: 2 }]
 			let e2 = Experiment.create({
 				name: 'e2',
+				id: 'bar-id',
 				variations: e2Variations,
 				targeting: { geo: '*', url: '/index' }
 			})
