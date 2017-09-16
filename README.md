@@ -51,44 +51,6 @@ if (!experiment) {
 }
 ```
 
-## integrating with express
-This exampe is NOT meant to work as is. For example there is no `page` field in express request object
-
-```js
-const express = require('express')
-const { expressMiddleware, ExperimentContainer, Experiment } = require('@reason/pickpick')
-
-// create the experiments
-let container = ExperimentContainer.create({})
-let e1 = Experiment.create({
-    name: 'buy page price',
-    variations: [ { price: 1 }, { price: 2 }],
-    targeting: { geo: '*', page: 'buy' }
-})
-
-let e2 = Experiment.create({
-    name: 'buy page text',
-    variations: [ { text: 'foo' }, { text: 'base' }],
-    targeting: { geo: ['IL', 'US'], page: 'buy', language: [ 'en', 'he' ]}
-})
-
-container.add(e1, e2)
-
-// integrate with express
-
-let app = express()
-
-app.use(expressMiddleware(container))
-app.get((req, res, next) => {
-    if(req.pickpick) {
-        let experiment = req.pickpick.experiment
-        let variation = req.pickpick.variation
-        // do something with the selected variation
-    }
-})
-
-```
-
 ### summary of tests
 ```
   Experiment picks a variation

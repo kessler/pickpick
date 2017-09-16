@@ -159,7 +159,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 
 			let container = ExperimentContainer.create({ experiments })
 			let json = JSON.parse(JSON.stringify(container))
-			//console.log(JSON.stringify(json))
+			//console.log(JSON.stringify(json, null, '\t'))
 			let deserializedContainer = ExperimentContainer.create(json)
 		})
 	})
