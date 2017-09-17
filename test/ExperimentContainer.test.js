@@ -1,5 +1,3 @@
-'use strict'
-
 const { expect } = require('chai')
 const { ExperimentContainer, Experiment, Variation } = require('../index')
 const Counter = require('./util/Counter')
@@ -191,7 +189,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			expect(JSON.stringify(json)).to.deep.equal(JSON.stringify(container))
 		})
 
-		it.skip('deserializes from json', () => {
+		it('deserializes from json', () => {
 			let experiments = [{
 				name: 'e1',
 				id: 'foo-id',
@@ -206,8 +204,8 @@ describe('ExperimentContainer is a container for experiments', () => {
 
 			let container = ExperimentContainer.create({ experiments })
 			let json = JSON.parse(JSON.stringify(container))
-			//console.log(JSON.stringify(json, null, '\t'))
 			let deserializedContainer = ExperimentContainer.create(json)
+			expect(container).to.deep.equal(deserializedContainer)
 		})
 	})
 

@@ -1,5 +1,3 @@
-'use strict'
-
 const { expect } = require('chai')
 const { Experiment, Variation, Targeting } = require('../index')
 const loadbalance = require('loadbalance')
