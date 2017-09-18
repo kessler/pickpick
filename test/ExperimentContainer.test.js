@@ -21,12 +21,47 @@ describe('ExperimentContainer is a container for experiments', () => {
 		}))
 	})
 
-	it('which can be added to the container using add()', () => {
-		let e1 = Experiment.create({ id: 'foo-id', variations })
-		container.add(e1)
-		let experiments = Array.from(container)
-		expect(experiments).to.have.length(1)
-		expect(experiments[0]).to.equal(e1)
+	describe('that can be added to the container using add()', () => {
+		it('and an instance of Experiment', () => {
+			let e1 = Experiment.create({ id: 'foo-id', variations })
+			container.add(e1)
+			let experiments = Array.from(container)
+			expect(experiments).to.have.length(1)
+			expect(experiments[0]).to.deep.equal(e1)
+		})
+
+		it('and an instance of Variation containing an experiment instance as it\'s object', () => {
+			let e1 = Experiment.create({ id: 'foo-id', variations })
+			let v1 = Variation.create({ object: e1, weight: 2 })
+			container.add(v1)
+			let experiments = Array.from(container)
+			expect(experiments).to.have.length(1)
+			expect(experiments[0]).to.deep.equal(e1)
+		})
+
+		// TODO this test is terrible
+		it('and an instance of Variation containing an experiment object literal as it\'s object', () => {
+			let e1 = { id: 'foo-id', variations }
+			let v1 = Variation.create({ object: e1, weight: 2 })
+			container.add(v1)
+
+			let experiments = Array.from(container)
+			expect(experiments).to.have.length(1)
+
+			expect(experiments[0].id).to.equal(e1.id)
+			let actualVariations = Array.from(experiments[0])
+			expect(actualVariations).to.have.length(3)
+			
+			expect(actualVariations[0].weight).to.deep.equal(1)
+			expect(actualVariations[0].object).to.deep.equal(1)
+			expect(actualVariations[1].weight).to.deep.equal(1)
+			expect(actualVariations[1].object).to.deep.equal(2)
+			expect(actualVariations[2].weight).to.deep.equal(1)
+			expect(actualVariations[2].object).to.deep.equal(3)
+		})
+
+		it.skip('and an experiment expressed as an object literal', () => {
+		})
 	})
 
 	it('that collects all the targeting features from each experiment added to it', () => {
