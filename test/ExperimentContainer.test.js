@@ -75,25 +75,39 @@ describe('ExperimentContainer is a container for experiments', () => {
 		expect(targetingFeatures).to.include('geo')
 	})
 
-	it('so one can check if experiment is a part of it', () => {
-		let e1 = Experiment.create({ id: 'foo-id', name: 'foo', variations, targeting: { page: 'buy' } })
-		let e2 = Experiment.create({ id: 'bar-id', name: 'bar', variations, targeting: { geo: 'MX' } })
-		container.add(e1, e2)
+	describe('so one can check if experiment is a part of it', () => {
+		let e1, e2, e3, e4, e5, e6
+		it('by experiment instance', () => {
+			expect(container.has(e1)).to.be.true
+			expect(container.has(e2)).to.be.true
+			expect(container.has(e3)).to.be.true
+			expect(container.has(e4)).to.be.true
+			expect(container.has(e5)).to.be.false
+			expect(() => { container.has(e6) }).to.throw
+		})
+		it('by experiment id', () => {
+			expect(container.hasId('foo-id')).to.be.true
+			expect(container.hasId('bar-id')).to.be.true
+			expect(container.hasId('roo-id')).to.be.true
+			expect(container.hasId('goo-id')).to.be.true
+			expect(container.hasId('zoo-id')).to.be.false
+			expect(container.hasId('boo')).to.be.false
+			expect(container.hasId()).to.be.false
+		})
+		beforeEach(() => {
+			e1 = Experiment.create({ id: 'foo-id', name: 'foo', variations: [1,2,3], targeting: { page: 'buy' } })
+			e2 = Experiment.create({ id: 'bar-id', name: 'bar', variations: [1,2,3], targeting: { geo: 'MX' } })
+			container.add(e1, e2)
 
-		let e3 = Experiment.create({ id: 'roo-id', name: 'roo', variations, targeting: { geo: 'FR' } })
-		let e4 = Experiment.create({ id: 'goo-id', name: 'goo', variations, targeting: { geo: 'BR' } })
-		container.add(Variation.create({ object: e3, weight: 20 }), Variation.create({ object: e4, weight: 80 }))
+			e3 = Experiment.create({ id: 'roo-id', name: 'roo', variations: [1,2,3], targeting: { geo: 'FR' } })
+			e4 = Experiment.create({ id: 'goo-id', name: 'goo', variations: [1,2,3], targeting: { geo: 'BR' } })
+			container.add(Variation.create({ object: e3, weight: 20 }), Variation.create({ object: e4, weight: 80 }))
 
-		let e5 = Experiment.create({ id: 'zoo-id', name: 'zoo', variations, targeting: { geo: 'IT' } })
+			e5 = Experiment.create({ id: 'zoo-id', name: 'zoo', variations: [1,2,3], targeting: { geo: 'IT' } })
 
-		let e6 = { id: 'boo-id', name: 'boo', variations, targeting: { geo: 'US' } }
+			e6 = { id: 'boo-id', name: 'boo', variations: [1,2,3], targeting: { geo: 'US' } }
 
-		expect(container.has(e1)).to.be.true
-		expect(container.has(e2)).to.be.true
-		expect(container.has(e3)).to.be.true
-		expect(container.has(e4)).to.be.true
-		expect(container.has(e5)).to.be.false
-		expect(() => { container.has(e6) }).to.throw
+		})
 	})
 
 	it('and have a unique id', () => {
