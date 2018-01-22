@@ -12,10 +12,12 @@
     "debug": "^2.6.8",
     "deep-equal": "^1.0.1",
     "digital-tree": "^1.0.1",
+    "later": "^1.2.0",
     "loadbalance": "^0.3.0",
     "lodash": "^4.17.4"
   },
   "devDependencies": {
-    "chai": "^4.0.2"
+    "chai": "^4.0.2",
+    "express": "^4.16.2"
   }
 }

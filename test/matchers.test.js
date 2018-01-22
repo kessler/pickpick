@@ -1,5 +1,6 @@
 const { expect } = require('chai')
 const { matchers } = require('../index')
+const later = require('later')
 
 describe('Matchers are a bunch of stateful operators', () => {
 	it('isExactly() returns true if the tested value matches the initial value exactly (===)', () => {
@@ -35,6 +36,11 @@ describe('Matchers are a bunch of stateful operators', () => {
 		expect(matchers.isIn([1, 2, 3]).match(4)).to.be.false
 	})
 
+	it('temporal returns true if the tested date is a moment within the specified schedule', () => {
+		let schedule = later.parse.recur().on(new Date('2013-03-21T11:30:00')).fullDate()
+		expect(matchers.temporal(schedule).match(new Date('2013-03-21T11:30:00Z'))).to.be.true
+	})
+
 	it('and returns true if tested value matches all conditions (expressed as matchers) in the initial value', () => {
 		expect(matchers.and('US', 'MX').match('US')).to.be.false // this will forever be false
 
@@ -51,7 +57,7 @@ describe('Matchers are a bunch of stateful operators', () => {
 		expect(matchers.and('!US', 'MX').match('IL')).to.be.false
 	})
 
-	describe('valueOf() takes a string and returns an appropriate matcher for it', () => {
+	describe('valueOf() takes a value and returns an appropriate matcher for it', () => {
 		it('returns an isAny matcher for \'*\'', () => {
 			let matcher = matchers.valueOf('*')
 			expect(matcher).to.be.instanceOf(matchers.IsAnyMatcher)
@@ -113,11 +119,25 @@ describe('Matchers are a bunch of stateful operators', () => {
 			})
 		})
 
+		describe('returns a temporal matcher', () => {
+			it.skip('when the input is a TemporalValue', () => {
+				let tv = TemporalValue.cron('13123')
+				let matcher = matchers.valueOf(tv)
+				expect(matcher).to.be.instanceOf(matchers.TemporalMatcher)
+			})
+
+			it('when the input is a recur() schedule object (later.parse.recur())', () => {
+				let tv = later.parse.recur().on(1,2,3).minute()
+				let matcher = matchers.valueOf(tv)
+				expect(matcher).to.be.instanceOf(matchers.TemporalMatcher)	
+			})
+		})
+
 		it('throws an error for anything else', () => {
 			test({})
 			test(undefined)
 			test(null)
-			test(function () {})
+			test(function() {})
 			test(() => {})
 
 			function test(something) {
