@@ -27,7 +27,6 @@ class Container {
 		let candidates = []
 
 		for (let experiment of this._experiments) {
-			//console.log(experiment.targeting.toString(), targeting, experiment.match(targeting))
 			if (experiment.match(targeting)) {
 				candidates.push(experiment)
 			}
@@ -117,8 +116,6 @@ function run() {
 	for (let i = 0; i < size; i++) {
 		let visitor = traffic.pick()
 		
-		//console.log('-------------------------visit-----------------------\n')
-		//let variation = container.getVariation(visitor)
 		let experiment = container.getExperiment(visitor)
 		if (!experiment) {
 			experimentsCounter.count('default')

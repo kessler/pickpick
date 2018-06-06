@@ -10,30 +10,10 @@ describe('Targeting represents a mapping between features and stateful operators
 		}).not.to.throw
 	})
 
-	it('that experssion can use all the short forms used in expressing matchers (matchers.valueOf(...))', () => {
-		let targeting = Targeting.create({
-			geo: '*',
-			page: 'buy',
-			language: ['en', 'he']
-		})
-
-		expect(targeting.match({
-			geo: 'il',
-			page: 'buy',
-			language: 'en'
-		})).to.be.true
-
-		expect(targeting.match({
-			geo: 'il',
-			page: 'index',
-			language: 'en'
-		})).to.be.false
-	})
-
 	it('exposes features and matchers via an iterator', () => {
 		let targeting = Targeting.create({
-			geo: 'foo',
-			page: ['bar', 'index']
+			geo: { matcher: 'isExactly', value: 'foo' },
+			page: { matcher: 'isIn', value: ['bar', 'index'] }
 		})
 
 		let expression = {}
@@ -56,8 +36,8 @@ describe('Targeting represents a mapping between features and stateful operators
 
 	it('can be queried for features/matchers combinations using has()', () => {
 		let targeting = Targeting.create({
-			geo: 'foo',
-			page: '*'
+			geo: { matcher: 'isExactly', value: 'foo' },
+			page: { matcher: 'isAny', value: '*' }
 		})
 
 		expect(targeting.has('geo', 'foo')).to.be.true
@@ -84,7 +64,8 @@ describe('Targeting represents a mapping between features and stateful operators
 			expect(targeting.match({})).to.be.true
 			expect(targeting.match(false)).to.be.true
 			expect(targeting.match(true)).to.be.true
-			expect(targeting.match(() => {})).to.be.true
+			expect(targeting.match(() => {
+			})).to.be.true
 			expect(targeting.match('1ajsdhs')).to.be.true
 			expect(targeting.match({ bla: 'bla' })).to.be.true
 		})
