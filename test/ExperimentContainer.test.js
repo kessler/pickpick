@@ -44,8 +44,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			expect(actualVariations[2].object).to.deep.equal(3)
 		})
 
-		it.skip('and an experiment expressed as an object literal', () => {
-		})
+		it.skip('and an experiment expressed as an object literal', () => {})
 	})
 
 	it('that collects all the targeting features from each experiment added to it', () => {
@@ -86,51 +85,69 @@ describe('ExperimentContainer is a container for experiments', () => {
 		})
 		beforeEach(() => {
 			e1 = Experiment.create({
-				id: 'foo-id', name: 'foo', variations: [
+				id: 'foo-id',
+				name: 'foo',
+				variations: [
 					{ object: 1 },
 					{ object: 2 },
 					{ object: 3 }
-				], targeting: { page: { matcher: 'isExactly', value: 'buy' } }
+				],
+				targeting: { page: { matcher: 'isExactly', value: 'buy' } }
 			})
 			e2 = Experiment.create({
-				id: 'bar-id', name: 'bar', variations: [
+				id: 'bar-id',
+				name: 'bar',
+				variations: [
 					{ object: 1 },
 					{ object: 2 },
 					{ object: 3 }
-				], targeting: { geo: { matcher: 'isExactly', value: 'MX' } }
+				],
+				targeting: { geo: { matcher: 'isExactly', value: 'MX' } }
 			})
 			container.add(e1, e2)
 
 			e3 = Experiment.create({
-				id: 'roo-id', name: 'roo', variations: [
+				id: 'roo-id',
+				name: 'roo',
+				variations: [
 					{ object: 1 },
 					{ object: 2 },
 					{ object: 3 }
-				], targeting: { geo: { matcher: 'isExactly', value: 'FR' } }
+				],
+				targeting: { geo: { matcher: 'isExactly', value: 'FR' } }
 			})
 			e4 = Experiment.create({
-				id: 'goo-id', name: 'goo', variations: [
+				id: 'goo-id',
+				name: 'goo',
+				variations: [
 					{ object: 1 },
 					{ object: 2 },
 					{ object: 3 }
-				], targeting: { geo: { matcher: 'isExactly', value: 'BR' } }
+				],
+				targeting: { geo: { matcher: 'isExactly', value: 'BR' } }
 			})
 			container.add(Variation.create({ object: e3, weight: 20 }), Variation.create({ object: e4, weight: 80 }))
 
 			e5 = Experiment.create({
-				id: 'zoo-id', name: 'zoo', variations: [
+				id: 'zoo-id',
+				name: 'zoo',
+				variations: [
 					{ object: 1 },
 					{ object: 2 },
 					{ object: 3 }
-				], targeting: { geo: { matcher: 'isExactly', value: 'IT' } }
+				],
+				targeting: { geo: { matcher: 'isExactly', value: 'IT' } }
 			})
 
 			e6 = {
-				id: 'boo-id', name: 'boo', variations: [
+				id: 'boo-id',
+				name: 'boo',
+				variations: [
 					{ object: 1 },
 					{ object: 2 },
 					{ object: 3 }
-				], targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+				],
+				targeting: { geo: { matcher: 'isExactly', value: 'US' } }
 			}
 
 		})
@@ -257,24 +274,30 @@ describe('ExperimentContainer is a container for experiments', () => {
 	describe('serialization/deserialization to json', () => {
 		it('serializes to json', () => {
 			let experiments = [{
-				name: 'e1',
-				id: 'foo-id',
-				variations: [
-					{ object: 1 },
-					{ object: 2 },
-					{ object: 3 }
-				],
-				targeting: { geo: { matcher: 'isExactly', value: 'US' } }
-			}, {
-				name: 'e2',
-				id: 'bar-id',
-				variations: [
-					{ object: 1 },
-					{ object: 2 },
-					{ object: 3 }
-				],
-				targeting: { geo: { matcher: 'isExactly', value: 'US' } }
-			}]
+					object: {
+						name: 'e1',
+						id: 'foo-id',
+						variations: [
+							{ object: 1 },
+							{ object: 2 },
+							{ object: 3 }
+						],
+						targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+					}
+				},
+				{
+					object: {
+						name: 'e2',
+						id: 'bar-id',
+						variations: [
+							{ object: 1 },
+							{ object: 2 },
+							{ object: 3 }
+						],
+						targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+					}
+				}
+			]
 
 			let container = ExperimentContainer.create({ experiments })
 
@@ -311,24 +334,30 @@ describe('ExperimentContainer is a container for experiments', () => {
 
 		it('deserializes from json', () => {
 			let experiments = [{
-				name: 'e1',
-				id: 'foo-id',
-				variations: [
-					{ object: 1, weight: 1 },
-					{ object: 2, weight: 1 },
-					{ object: 3, weight: 1 }
-				],
-				targeting: { geo: { matcher: 'isExactly', value: 'US' } }
-			}, {
-				name: 'e2',
-				id: 'bar-id',
-				variations: [
-					{ object: 1, weight: 1 },
-					{ object: 2, weight: 1 },
-					{ object: 3, weight: 1 }
-				],
-				targeting: { geo: { matcher: 'isExactly', value: 'US' } }
-			}]
+					object: {
+						name: 'e1',
+						id: 'foo-id',
+						variations: [
+							{ object: 1 },
+							{ object: 2 },
+							{ object: 3 }
+						],
+						targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+					}
+				},
+				{
+					object: {
+						name: 'e2',
+						id: 'bar-id',
+						variations: [
+							{ object: 1 },
+							{ object: 2 },
+							{ object: 3 }
+						],
+						targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+					}
+				}
+			]
 
 			let container = ExperimentContainer.create({ experiments })
 			let json = JSON.parse(JSON.stringify(container))
