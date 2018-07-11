@@ -41,7 +41,7 @@ describe('Experiment picks a variation', () => {
 		expect(variationCounter.get(3)).to.equal(25)
 	})
 
-	it('variation input can be written as an object with weight, weights are optional', () => {
+	it('variation can be expressed as an object literal with an object property and an optional weight property', () => {
 		let variations = [
 			{
 				object: 1,
@@ -57,6 +57,7 @@ describe('Experiment picks a variation', () => {
 				weight: 3
 			}
 		]
+		
 		let experiment = Experiment.create({ id: 'foo-id', variations })
 		let experimentVariations = Array.from(experiment)
 		// the order of the variations is not static
