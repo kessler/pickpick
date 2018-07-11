@@ -1,7 +1,6 @@
 const { expect } = require('chai')
 const { matchers } = require('../index')
 const later = require('later')
-
 describe('Matchers are a bunch of stateful operators', () => {
 	it('isExactly() returns true if the tested value matches the initial value exactly (===)', () => {
 		expect(matchers.isExactly('US').match('US')).to.be.true
@@ -38,7 +37,7 @@ describe('Matchers are a bunch of stateful operators', () => {
 
 	it('temporal returns true if the tested date is a moment within the specified schedule', () => {
 		let schedule = later.parse.recur().on(new Date('2013-03-21T11:30:00')).fullDate()
-		expect(matchers.temporal(schedule).match(new Date('2013-03-21T11:30:00Z'))).to.be.true
+		expect(matchers.temporal(schedule).match(new Date('2013-03-21T11:30:00'))).to.be.true
 	})
 
 	it('and returns true if tested value matches all conditions (expressed as matchers) in the initial value', () => {

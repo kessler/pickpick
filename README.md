@@ -16,24 +16,51 @@ const { Experiment, ExperimentContainer, Targeting, matchers, Variation } = requ
 // first create the experiments:
 
 let e1 = Experiment.create({
-    name: 'buy page button color experiment',
-    id:'953d6fe0',
-    variations: ['#ff0000', '#00ff00'], // shorthand for [ Variation.create({ object: '#ff0000', weight: 1 }), Variation.create({ object: '#00ff00', weight: 1 } ]
-    targeting: { page: 'buy' } // shorthand for Targeting.create({ page: matchers.isExactly('buy') })
+	name: 'buy page button color experiment',
+	id: '953d6fe0',
+	variations: [
+		{ object: '#ff0000', weight: 4 },
+		{ object: '#ff0000', weight: 1 },
+		{ object: '#00ff00', weight: 1 }
+	],
+	targeting: {
+		page: {
+			matcher: 'isIn',
+			value: ['buy', 'index']
+		}
+	} 
 })
 
 let e2 = Experiment.create({
-    name: 'buy page price experiment',
-    id:'a40f09ac',
-    variations: [25, 35, 45],
-    targeting: { page: 'buy' }
+	name: 'buy page price experiment',
+	id: 'a40f09ac',
+	variations: [
+		{ object: 25 },
+		{ object: 35 },
+		{ object: 45 }
+	],
+	targeting: {
+		page: {
+			matcher: 'and',
+			value: ['!home', '!flex']
+		}
+	}
 })
 
 let e3 = Experiment.create({
-    name: 'index text experiment',
-    id:'ac49ef42',
-    variations: ['hi', 'hello', 'welcome'],
-    targeting: { page: 'index' }
+	name: 'index text experiment',
+	id: 'ac49ef42',
+	variations: [
+		{ object: 'hi' },
+		{ object: 'hello' },
+		{ object: 'welcome' }
+	],
+	targeting: {
+		page: {
+			matcher: 'isExactly',
+			value: 'index'
+		}
+	}
 })
 
 // now create a container:
@@ -41,16 +68,20 @@ let experiments = [e1, e2, e3]
 let container = ExperimentContainer.create({ experiments })
 
 // simulate a visitor that needs a determination about which variation of which experiment he gets:
-let visitor = { page: 'buy' }
-let experiment = container.pick(visitor)
+let visitor = { page: 'index' }
+for (let i = 0; i < 10; i++) {
+	let experiment = container.pick(visitor)
 
-if (!experiment) {
-    // no experiment that targets this user
-    // handle this with defaults
-} else {
-    console.log(`selected experiment ${experiment.toString()} for ${JSON.stringify(visitor)}`)
-    let variation = experiment.pick()
-    console.log(`selected variation is ${variation}`)
+	if (!experiment) {
+		// no experiment that targets this user
+		// handle this with defaults
+		console.log('default goes here')
+	} else {
+
+		console.log(`selected experiment '${experiment.name}' for '${JSON.stringify(visitor)}'`)
+		let variation = experiment.pick()
+		console.log(`selected variation is ${variation}`)
+	}
 }
 ```
 
@@ -59,8 +90,6 @@ if (!experiment) {
       Experiment picks a variation
         ✓ based on even weights
         ✓ based on uneven weights
-        ✓ variation input can be written in a short form, if weights are even
-        ✓ targeting input can be written in short form using javascript object
         ✓ can be serialized into json
         ✓ can be deserialized from json
 
@@ -82,7 +111,6 @@ if (!experiment) {
 
       Targeting represents a mapping between features and stateful operators (Matchers)
         ✓ to create a targeting, specify an expression of features and matchers in the constructor
-        ✓ that experssion can use all the short forms used in expressing matchers (matchers.valueOf(...))
         ✓ exposes features and matchers via an iterator
         ✓ can be queried for features/matchers combinations using has()
         the match() method accepts an input and test it

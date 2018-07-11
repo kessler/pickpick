@@ -1,5 +1,5 @@
 const { expect } = require('chai')
-const { Experiment, Variation, Targeting } = require('../index')
+const { Experiment, Variation, Targeting, matchers } = require('../index')
 const loadbalance = require('loadbalance')
 const Counter = require('./util/Counter')
 
@@ -11,9 +11,9 @@ describe('Experiment picks a variation', () => {
 		let experiment = Experiment.create({
 			id: 'foo-id',
 			variations: [
-				Variation.create({ object: 1, weight: 1 }),
-				Variation.create({ object: 2, weight: 1 }),
-				Variation.create({ object: 3, weight: 1 })
+				{ object: 1, weight: 1 },
+				{ object: 2, weight: 1 },
+				{ object: 3, weight: 1 }
 			]
 		})
 
@@ -41,67 +41,106 @@ describe('Experiment picks a variation', () => {
 		expect(variationCounter.get(3)).to.equal(25)
 	})
 
-	it('variation input can be written in a short form, if weights are even', () => {
-		let variations = [1, 2, 3]
+	it('variation input can be written as an object with weight, weights are optional', () => {
+		let variations = [
+			{
+				object: 1,
+				weight: 2
+			},
+			{
+				object: {
+					test: 2
+				}
+			},
+			{
+				object: 3,
+				weight: 3
+			}
+		]
 		let experiment = Experiment.create({ id: 'foo-id', variations })
 		let experimentVariations = Array.from(experiment)
+		// the order of the variations is not static
+		for (let i = 0; i < experimentVariations.length; i++) {
+			let variation = experimentVariations[i]
 
-		expect(experimentVariations[0]).to.have.property('weight', 1)
-		expect(experimentVariations[0]).to.have.property('object', 1)
+			expect(variation).to.have.property('object')
 
-		expect(experimentVariations[1]).to.have.property('weight', 1)
-		expect(experimentVariations[1]).to.have.property('object', 2)
-
-		expect(experimentVariations[2]).to.have.property('weight', 1)
-		expect(experimentVariations[2]).to.have.property('object', 3)
-	})
-
-	it('targeting input can be written in short form using javascript object', () => {
-		let variations = [1, 2, 3]
-		let targeting = { geo: 'US' }
-		let experiment = Experiment.create({ id: 'foo-id', targeting, variations })
-
-		expect(experiment.targeting).to.be.instanceOf(Targeting)
-		expect(experiment.targeting.has('geo', 'US')).to.be.true
+			switch (variation.object) {
+				case 1:
+					expect(variation).to.have.property('weight', 2)
+					break
+				case 3:
+					expect(variation).to.have.property('weight', 3)
+					break
+				default:
+					expect(variation.object).to.deep.equal({ test: 2 })
+			}
+		}
 	})
 
 	it('can be serialized into json', () => {
-		let variations = [1, 2, 3]
-		let targeting = { geo: 'US' }
+		let variations = [
+			{ object: 1 },
+			{ object: 2 },
+			{ object: 3 }
+		]
+
+		let targeting = {
+			geo: {
+				matcher: 'isExactly',
+				value: 'US'
+			}
+		}
+
 		let experiment = Experiment.create({ id: 'foo-id', targeting, variations, name: 'test' })
 		let json = experiment.toJSON(experiment)
 
 		expect(json).to.have.deep.property('variations', [
-			{ object: 1, weight: 1},
-			{ object: 2, weight: 1},
-			{ object: 3, weight: 1}
+			{ object: 1, weight: 1 },
+			{ object: 2, weight: 1 },
+			{ object: 3, weight: 1 }
 		])
 
-		expect(json).to.have.deep.property('targeting', { geo: 'US' })
+		expect(json).to.have.deep.property('targeting', { geo: { matcher: 'isExactly', value: 'US' } })
 		expect(json).to.have.property('name', 'test')
 
 		expect(JSON.stringify(experiment)).to.equal(JSON.stringify(json))
 	})
 
 	it('can be deserialized from json', () => {
-		let variations = [1, 2, 3]
-		let targeting = { geo: 'US' }
+		let variations = [
+			{ object: 1 },
+			{ object: 2 },
+			{ object: 3 }
+		]
+
+		let targeting = {
+			geo: {
+				matcher: 'isExactly',
+				value: 'US'
+			}
+		}
+
 		let experiment = Experiment.create({ id: 'foo-id', targeting, variations, name: 'test' })
 		let json = JSON.stringify(experiment)
 
 		let deserializedExperiment = Experiment.create(JSON.parse(json))
-
 		expect(deserializedExperiment).to.have.property('name', 'test')
 
 		let deserializedVariations = Array.from(deserializedExperiment)
-
 		expect(deserializedVariations).to.deep.equal([
-			Variation.create({ object: 1, weight: 1}),
-			Variation.create({ object: 2, weight: 1}),
-			Variation.create({ object: 3, weight: 1})
+			Variation.create({ object: 1, weight: 1 }),
+			Variation.create({ object: 2, weight: 1 }),
+			Variation.create({ object: 3, weight: 1 })
 		])
 
-		expect(deserializedExperiment.targeting).to.deep.equal(Targeting.create({ geo: 'US' }))
+		expect(deserializedExperiment.targeting).to.deep.equal(Targeting.create({
+				geo: {
+					matcher: 'isExactly',
+					value: 'US'
+				}
+			}
+		))
 	})
 
 	beforeEach(() => {
