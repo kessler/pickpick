@@ -1,13 +1,13 @@
 {
-  "name": "@reason/pickpick",
+  "name": "pickpick",
   "version": "5.0.0",
-  "description": "A/B testing engine",
+  "description": "an A/B testing engine for the web",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "dependencies": {
     "debug": "^2.6.8",
     "deep-equal": "^1.0.1",
