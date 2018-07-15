@@ -10,12 +10,7 @@ let e1 = Experiment.create({
 		{ object: '#ff0000', weight: 1 },
 		{ object: '#00ff00', weight: 1 }
 	],
-	targeting: {
-		page: {
-			matcher: 'isIn',
-			value: ['buy', 'index']
-		}
-	}
+	targeting: '_.page in ["buy", "index"]'
 })
 
 let e2 = Experiment.create({
@@ -26,12 +21,7 @@ let e2 = Experiment.create({
 		{ object: 35 },
 		{ object: 45 }
 	],
-	targeting: {
-		page: {
-			matcher: 'and',
-			value: ['!home', '!flex']
-		}
-	}
+	targeting: '_.page !== "home" && _.page !=="about"'
 })
 
 let e3 = Experiment.create({
@@ -42,11 +32,7 @@ let e3 = Experiment.create({
 		{ object: 'hello' },
 		{ object: 'welcome' }
 	],
-	targeting: {
-		page: {
-			matcher: 'isExactly',
-			value: 'index'
-		}
+	targeting: '_.page === "index"'
 	}
 })
 
