@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha test/*"
   },
-  "author": "",
+  "author": "Yaniv Kessler",
   "license": "MIT",
   "dependencies": {
     "debug": "^2.6.8",
@@ -19,6 +19,6 @@
   },
   "devDependencies": {
     "chai": "^4.0.2",
-    "express": "^4.16.2"
+    "express": "^4.16.3"
   }
 }
