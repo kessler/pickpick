@@ -140,26 +140,6 @@ describe('Experiment picks a variation', () => {
 		visitorCounter = new Counter()
 	})
 
-	class Counter {
-		constructor() {
-			this._data = new Map()
-		}
-
-		count(something) {
-			let count = this._data.get(something)
-
-			if (!count) {
-				count = 0
-			}
-
-			this._data.set(something, ++count)
-		}
-
-		get(something) {
-			return this._data.get(something)
-		}
-	}
-
 	function runExperiment(experiment, size) {
 		for (let i = 0; i < size; i++) {
 			let variation = experiment.pick()
