@@ -1,4 +1,4 @@
-const { Experiment, ExperimentContainer, Targeting, matchers, Variation } = require('./index')
+const { Experiment, ExperimentContainer } = require('./index')
 
 // first create the experiments:
 
@@ -33,7 +33,6 @@ let e3 = Experiment.create({
 		{ object: 'welcome' }
 	],
 	targeting: '_.page === "index"'
-	}
 })
 
 // now create a container:

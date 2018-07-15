@@ -13,7 +13,7 @@ Let's say we have a website with two pages `buy` and `index` and we want to run 
 ### simple example:
 
 ```js
-const { Experiment, ExperimentContainer } = require('./index')
+const { Experiment, ExperimentContainer } = require('pickpick')
 
 // first create the experiments:
 
