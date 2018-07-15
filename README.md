@@ -80,20 +80,27 @@ for (let i = 0; i < 10; i++) {
 
 -   [Experiment](#experiment)
     -   [pick](#pick)
-    -   [merge](#merge)
--   [ObjectIterator](#objectiterator)
--   [ExperimentContainer](#experimentcontainer)
+    -   [match](#match)
     -   [add](#add)
+    -   [iterator](#iterator)
+    -   [merge](#merge)
+-   [constructor](#constructor)
+-   [match](#match-1)
+-   [expression](#expression)
+-   [iterator](#iterator-1)
+-   [has](#has)
+-   [ExperimentContainer](#experimentcontainer)
+    -   [add](#add-1)
     -   [pick](#pick-1)
     -   [targetingFeatures](#targetingfeatures)
-    -   [iterator](#iterator)
-    -   [has](#has)
+    -   [iterator](#iterator-2)
+    -   [has](#has-1)
     -   [hasId](#hasid)
     -   [toJSON](#tojson)
 
 ### Experiment
 
-[lib/Experiment.js:34-182](https://github.com/ReasonSoftware/pickpick/blob/1014d9b8ee81832a70d2996e3651344cc1602506/lib/Experiment.js#L34-L182 "Source code on GitHub")
+[lib/Experiment.js:34-195](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/Experiment.js#L34-L195 "Source code on GitHub")
 
 An A/B test experiment contains one or more [variations](@Variation) and a definition of [targeting](@Targeting).
 
@@ -125,15 +132,43 @@ const e1 = Experiment.create({
 
 #### pick
 
-[lib/Experiment.js:66-68](https://github.com/ReasonSoftware/pickpick/blob/1014d9b8ee81832a70d2996e3651344cc1602506/lib/Experiment.js#L66-L68 "Source code on GitHub")
+[lib/Experiment.js:66-68](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/Experiment.js#L66-L68 "Source code on GitHub")
 
-randomly select one variation &lt;-----------------------
+randomly select one variation from the Variations set
 
-Returns **\[type]** [description]
+Returns **Variant** the value contained within the selected variation
+
+#### match
+
+[lib/Experiment.js:76-78](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/Experiment.js#L76-L78 "Source code on GitHub")
+
+check if this experiment matches the input targeting
+
+**Parameters**
+
+-   `targeting` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
+
+Returns **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+
+#### add
+
+[lib/Experiment.js:84-96](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/Experiment.js#L84-L96 "Source code on GitHub")
+
+add another variation to this experiment
+
+**Parameters**
+
+-   `variation` **(Variation | [Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object))** 
+
+#### iterator
+
+[lib/Experiment.js:117-119](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/Experiment.js#L117-L119 "Source code on GitHub")
+
+iterate over the variations contained in this experiment
 
 #### merge
 
-[lib/Experiment.js:118-125](https://github.com/ReasonSoftware/pickpick/blob/1014d9b8ee81832a70d2996e3651344cc1602506/lib/Experiment.js#L118-L125 "Source code on GitHub")
+[lib/Experiment.js:131-138](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/Experiment.js#L131-L138 "Source code on GitHub")
 
 merge two experiments into one, this will pull
  the input experiment's variation into this one
@@ -147,21 +182,57 @@ merge two experiments into one, this will pull
 
 -   `experiment`  
 
-### ObjectIterator
+### constructor
 
-[lib/Variation.js:100-114](https://github.com/ReasonSoftware/pickpick/blob/1014d9b8ee81832a70d2996e3651344cc1602506/lib/Variation.js#L100-L114 "Source code on GitHub")
+[lib/Targeting.js:15-20](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/Targeting.js#L15-L20 "Source code on GitHub")
 
-wraps an iterator of an array of variations
-replacing the Variation instance with the
-object which is the "value" of the variation
+construct a new targeting instance
 
 **Parameters**
 
--   `variations`  
+-   `expression` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** see [pickpick-targeting-compiler](https://github.com/ironSource/pickpick-targeting-compiler) for more details
+
+### match
+
+[lib/Targeting.js:28-36](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/Targeting.js#L28-L36 "Source code on GitHub")
+
+check if the input data is matched by this targeting instance
+
+**Parameters**
+
+-   `inputTargeting` **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** is normally a simple js object
+
+Returns **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
+
+### expression
+
+[lib/Targeting.js:42-44](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/Targeting.js#L42-L44 "Source code on GitHub")
+
+access this Targeting's expression
+
+Returns **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** 
+
+### iterator
+
+[lib/Targeting.js:49-51](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/Targeting.js#L49-L51 "Source code on GitHub")
+
+iterate over the features that participate in the targeting
+
+### has
+
+[lib/Targeting.js:58-60](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/Targeting.js#L58-L60 "Source code on GitHub")
+
+check if a feature is part of this targeting instance
+
+**Parameters**
+
+-   `feature` **[String](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String)** a name of a feature, e.g `geo`
+
+Returns **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Boolean)** 
 
 ### ExperimentContainer
 
-[lib/ExperimentContainer.js:38-239](https://github.com/ReasonSoftware/pickpick/blob/1014d9b8ee81832a70d2996e3651344cc1602506/lib/ExperimentContainer.js#L38-L239 "Source code on GitHub")
+[lib/ExperimentContainer.js:38-239](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/ExperimentContainer.js#L38-L239 "Source code on GitHub")
 
 Contains one or more experiments and routes traffic evenly to each of them based on their 
    targeting. The following is an example of using a container to host several experiments, pick
@@ -194,7 +265,7 @@ if (experiment) {
 
 #### add
 
-[lib/ExperimentContainer.js:78-103](https://github.com/ReasonSoftware/pickpick/blob/1014d9b8ee81832a70d2996e3651344cc1602506/lib/ExperimentContainer.js#L78-L103 "Source code on GitHub")
+[lib/ExperimentContainer.js:78-103](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/ExperimentContainer.js#L78-L103 "Source code on GitHub")
 
 Add an experiment to this container. Inside a container experiments must
 have unique ids. This method can accept different kinds of experiment expressions:
@@ -227,7 +298,7 @@ container.add({ object: {... experiment data }, weight: 5 })
 
 #### pick
 
-[lib/ExperimentContainer.js:132-152](https://github.com/ReasonSoftware/pickpick/blob/1014d9b8ee81832a70d2996e3651344cc1602506/lib/ExperimentContainer.js#L132-L152 "Source code on GitHub")
+[lib/ExperimentContainer.js:132-152](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/ExperimentContainer.js#L132-L152 "Source code on GitHub")
 
 The pick method accepts a targeting object and randomly selects an experiment
    from a set of experiments that match the targeting specification.
@@ -259,7 +330,7 @@ Returns **[Experiment](#experiment)** an experiment that matches this targeting 
 
 #### targetingFeatures
 
-[lib/ExperimentContainer.js:160-162](https://github.com/ReasonSoftware/pickpick/blob/1014d9b8ee81832a70d2996e3651344cc1602506/lib/ExperimentContainer.js#L160-L162 "Source code on GitHub")
+[lib/ExperimentContainer.js:160-162](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/ExperimentContainer.js#L160-L162 "Source code on GitHub")
 
 An iterator over all the targeting features from all the experiments
    added to this container
@@ -268,7 +339,7 @@ Returns **Iterator**
 
 #### iterator
 
-[lib/ExperimentContainer.js:176-178](https://github.com/ReasonSoftware/pickpick/blob/1014d9b8ee81832a70d2996e3651344cc1602506/lib/ExperimentContainer.js#L176-L178 "Source code on GitHub")
+[lib/ExperimentContainer.js:176-178](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/ExperimentContainer.js#L176-L178 "Source code on GitHub")
 
 iterate over all the experiments in this container:
 
@@ -278,11 +349,11 @@ iterate over all the experiments in this container:
     	console.log(experiment.id)
     	}
 
-Returns **[ObjectIterator](#objectiterator)** 
+Returns **ObjectIterator** 
 
 #### has
 
-[lib/ExperimentContainer.js:185-188](https://github.com/ReasonSoftware/pickpick/blob/1014d9b8ee81832a70d2996e3651344cc1602506/lib/ExperimentContainer.js#L185-L188 "Source code on GitHub")
+[lib/ExperimentContainer.js:185-188](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/ExperimentContainer.js#L185-L188 "Source code on GitHub")
 
 check if this container contains the specified experiment
 
@@ -294,7 +365,7 @@ Returns **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### hasId
 
-[lib/ExperimentContainer.js:195-201](https://github.com/ReasonSoftware/pickpick/blob/1014d9b8ee81832a70d2996e3651344cc1602506/lib/ExperimentContainer.js#L195-L201 "Source code on GitHub")
+[lib/ExperimentContainer.js:195-201](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/ExperimentContainer.js#L195-L201 "Source code on GitHub")
 
 check if this container contains an experiment using an id
 
@@ -306,16 +377,8 @@ Returns **[Boolean](https://developer.mozilla.org/docs/Web/JavaScript/Reference/
 
 #### toJSON
 
-[lib/ExperimentContainer.js:208-215](https://github.com/ReasonSoftware/pickpick/blob/1014d9b8ee81832a70d2996e3651344cc1602506/lib/ExperimentContainer.js#L208-L215 "Source code on GitHub")
+[lib/ExperimentContainer.js:208-215](https://github.com/ReasonSoftware/pickpick/blob/596e7d9bb5ad8428d28dc5aaba7ae9b9a084b902/lib/ExperimentContainer.js#L208-L215 "Source code on GitHub")
 
 serialize this container with all it's experiments
 
 Returns **[Object](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object)** 
-
-## matching / targeting short forms
-
-todo: document
-
-## serializing / deserializing
-
-todo: toJSON for Targeting
