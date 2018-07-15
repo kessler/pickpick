@@ -10,7 +10,9 @@ Let's say we have a website with two pages `buy` and `index` and we want to run 
 -   on the `buy` page test `price`
 -   on the `index` page test `text`
 
-### simple example:
+### example:
+
+`npm i -S pickpick`
 
 ```js
 const { Experiment, ExperimentContainer } = require('pickpick')
