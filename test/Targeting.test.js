@@ -1,50 +1,24 @@
 const { expect } = require('chai')
 const { Targeting, matchers } = require('../index')
 
-describe('Targeting represents a mapping between features and stateful operators (Matchers)', () => {
-	it('to create a targeting, specify an expression of features and matchers in the constructor', () => {
+describe('Targeting is a logical expression designed to help target relevant experiments', () => {
+	it('to create an instance, specify an expression using the create() static factory', () => {
 		expect(() => {
-			let targeting = Targeting.create({
-				geo: matchers.isExactly('US')
-			})
+			let targeting = Targeting.create('_.geo === "US"')
 		}).not.to.throw
 	})
 
-	it('exposes features and matchers via an iterator', () => {
-		let targeting = Targeting.create({
-			geo: { matcher: 'isExactly', value: 'foo' },
-			page: { matcher: 'isIn', value: ['bar', 'index'] }
-		})
-
-		let expression = {}
-		let count = 0
-		for (let [feature, matcher] of targeting) {
-			expression[feature] = matcher
-			count++
-		}
-
-		expect(count).to.eql(2)
-
-		expect(expression).to.have.property('geo')
-		expect(expression.geo).to.have.property('name', 'isExactly')
-		expect(expression.geo).to.have.property('value', 'foo')
-
-		expect(expression).to.have.property('page')
-		expect(expression.page).to.have.property('name', 'isIn')
-		expect(expression.page).to.have.deep.property('value', ['bar', 'index'])
+	it('exposes features an iterator', () => {
+		let targeting = Targeting.create('_.geo === "foo" && _.page in ["bar", "index"]')
+		let features = Array.from(targeting)
+		expect(features).to.eql(['geo', 'page'])
 	})
 
-	it('can be queried for features/matchers combinations using has()', () => {
-		let targeting = Targeting.create({
-			geo: { matcher: 'isExactly', value: 'foo' },
-			page: { matcher: 'isAny', value: '*' }
-		})
+	it('can be queried for features using has()', () => {
+		let targeting = Targeting.create('_.geo === "US" && _.page === "index"')
 
-		expect(targeting.has('geo', 'foo')).to.be.true
-		expect(targeting.has('geo', matchers.isExactly('foo'))).to.be.true
-		expect(targeting.has('geo', 'bar')).to.be.false
-
-		expect(targeting.has('page', '*')).to.be.true
+		expect(targeting.has('geo')).to.be.true
+		expect(targeting.has('page')).to.be.true
 	})
 
 	describe('the match() method accepts an input and test it', () => {
@@ -70,48 +44,29 @@ describe('Targeting represents a mapping between features and stateful operators
 			expect(targeting.match({ bla: 'bla' })).to.be.true
 		})
 
-		it('against each feature specified in the targeting expression provided in the constructor', () => {
-			let targeting = Targeting.create({
-				f1: matchers.isExactly('f1'),
-				f2: matchers.isIn([1, 2])
-			})
-
+		it('against each feature specified in the targeting expression', () => {
+			let targeting = Targeting.create('_.f1 === "f1" && _.f2 in [1, 2]')
 			expect(targeting.match({ f1: 'f1', f2: 1 })).to.be.true
 			expect(targeting.match({ f1: 'f1', f2: 2 })).to.be.true
 		})
 
 		it('features in the input that containing unmatched values will fail the whole match()', () => {
-			let targeting = Targeting.create({
-				f1: matchers.isExactly('f1'),
-				f2: matchers.isIn([1, 2])
-			})
-
+			let targeting = Targeting.create('_.f1 === "f1" && _.f2 in [1, 2]')
 			expect(targeting.match({ f1: 'f1', f2: 3 })).to.be.false
 		})
 
 		it('only features in the targeting are tested, other features are ignored', () => {
-			let targeting = Targeting.create({
-				f1: matchers.isExactly('f1'),
-				f2: matchers.isIn([1, 2])
-			})
-
+			let targeting = Targeting.create('_.f1 === "f1" && _.f2 in [1, 2]')
 			expect(targeting.match({ f1: 'f1', f2: 1, b: '1' })).to.be.true
 		})
 
 		it('all the features in the targeting must exist in the input', () => {
-			let targeting = Targeting.create({
-				f1: matchers.isExactly('f1'),
-				f2: matchers.isIn([1, 2])
-			})
-
+			let targeting = Targeting.create('_.f1 === "f1" && _.f2 in [1, 2]')
 			expect(targeting.match({ f1: 'f1' })).to.be.false
 		})
 
 		it('unrelated inputs fail the match()', () => {
-			let targeting = Targeting.create({
-				f1: matchers.isExactly('f1'),
-				f2: matchers.isIn([1, 2])
-			})
+			let targeting = Targeting.create('_.f1 === "f1" && _.f2 in [1, 2]')
 
 			expect(targeting.match({})).to.be.false
 			expect(targeting.match('assdd')).to.be.false

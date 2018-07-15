@@ -14,7 +14,8 @@
     "digital-tree": "^1.0.1",
     "later": "^1.2.0",
     "loadbalance": "^0.3.0",
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "pickpick-targeting-compiler": "0.0.1"
   },
   "devDependencies": {
     "chai": "^4.0.2",
