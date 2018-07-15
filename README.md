@@ -1,6 +1,6 @@
-# Experiments Engine
+# pickpick
 
-A/B testing engine
+An A/B testing engine for the web
 
 ## Quick and dirty example
 
