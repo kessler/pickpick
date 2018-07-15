@@ -43,17 +43,15 @@ describe('ExperimentContainer is a container for experiments', () => {
 			expect(actualVariations[2].weight).to.deep.equal(1)
 			expect(actualVariations[2].object).to.deep.equal(3)
 		})
-
-		it.skip('and an experiment expressed as an object literal', () => {})
 	})
 
 	it('that collects all the targeting features from each experiment added to it', () => {
 		let e1 = Experiment.create({
 			id: 'foo-id',
 			variations,
-			targeting: { page: { matcher: 'isExactly', value: 'buy' } }
+			targeting: '_.page === "buy"'
 		})
-		let e2 = Experiment.create({ id: 'bar-id', variations, targeting: { geo: { matcher: 'isExactly', value: 'MX' } } })
+		let e2 = Experiment.create({ id: 'bar-id', variations, targeting: '_.geo === "MX"' })
 
 		container.add(e1, e2)
 		let targetingFeatures = Array.from(container.targetingFeatures)
@@ -74,6 +72,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 				container.has(e6)
 			}).to.throw
 		})
+
 		it('by experiment id', () => {
 			expect(container.hasId('foo-id')).to.be.true
 			expect(container.hasId('bar-id')).to.be.true
@@ -83,6 +82,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			expect(container.hasId('boo')).to.be.false
 			expect(container.hasId()).to.be.false
 		})
+
 		beforeEach(() => {
 			e1 = Experiment.create({
 				id: 'foo-id',
@@ -92,8 +92,9 @@ describe('ExperimentContainer is a container for experiments', () => {
 					{ object: 2 },
 					{ object: 3 }
 				],
-				targeting: { page: { matcher: 'isExactly', value: 'buy' } }
+				targeting: '_.page === "buy"'
 			})
+
 			e2 = Experiment.create({
 				id: 'bar-id',
 				name: 'bar',
@@ -102,8 +103,9 @@ describe('ExperimentContainer is a container for experiments', () => {
 					{ object: 2 },
 					{ object: 3 }
 				],
-				targeting: { geo: { matcher: 'isExactly', value: 'MX' } }
+				targeting: '_.geo ==="MX"'
 			})
+
 			container.add(e1, e2)
 
 			e3 = Experiment.create({
@@ -114,8 +116,9 @@ describe('ExperimentContainer is a container for experiments', () => {
 					{ object: 2 },
 					{ object: 3 }
 				],
-				targeting: { geo: { matcher: 'isExactly', value: 'FR' } }
+				targeting: '_.geo ==="FR"'
 			})
+
 			e4 = Experiment.create({
 				id: 'goo-id',
 				name: 'goo',
@@ -124,8 +127,9 @@ describe('ExperimentContainer is a container for experiments', () => {
 					{ object: 2 },
 					{ object: 3 }
 				],
-				targeting: { geo: { matcher: 'isExactly', value: 'BR' } }
+				targeting: '_.geo ==="BR"'
 			})
+
 			container.add(Variation.create({ object: e3, weight: 20 }), Variation.create({ object: e4, weight: 80 }))
 
 			e5 = Experiment.create({
@@ -136,7 +140,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 					{ object: 2 },
 					{ object: 3 }
 				],
-				targeting: { geo: { matcher: 'isExactly', value: 'IT' } }
+				targeting: '_.geo ==="IT"'
 			})
 
 			e6 = {
@@ -147,9 +151,8 @@ describe('ExperimentContainer is a container for experiments', () => {
 					{ object: 2 },
 					{ object: 3 }
 				],
-				targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+				targeting: '_.geo ==="US"'
 			}
-
 		})
 	})
 
@@ -158,13 +161,13 @@ describe('ExperimentContainer is a container for experiments', () => {
 			id: 'foo-id',
 			name: 'foo',
 			variations,
-			targeting: { page: { matcher: 'isExactly', value: 'buy' } }
+			targeting: '_.page ==="buy"'
 		})
 		let e2 = Experiment.create({
 			id: 'foo-id',
 			name: 'bar',
 			variations,
-			targeting: { geo: { matcher: 'isExactly', value: 'MX' } }
+			targeting: '_.geo ==="MX"'
 		})
 		expect(() => {
 			container.add(e1)
@@ -177,18 +180,19 @@ describe('ExperimentContainer is a container for experiments', () => {
 			container.add(Variation.create({ object: e1, weight: 20 }), Variation.create({ object: e2, weight: 80 }))
 		}).to.throw()
 	})
+
 	describe('that lets a user pick an experiment that matches a targeting experssion', () => {
 		it('using the pick(targeting) method', () => {
 
 			let e1 = Experiment.create({
 				id: 'foo-id',
 				variations,
-				targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+				targeting: '_.geo ==="US"'
 			})
 			let e2 = Experiment.create({
 				id: 'bar-id',
 				variations,
-				targeting: { geo: { matcher: 'isExactly', value: 'MX' } }
+				targeting: '_.geo ==="MX"'
 			})
 
 			container.add(e1, e2)
@@ -211,13 +215,13 @@ describe('ExperimentContainer is a container for experiments', () => {
 					id: 'foo-id',
 					name: 'e1',
 					variations,
-					targeting: { geo: { matcher: 'isExactly', value: 'MX' } }
+					targeting: '_.geo ==="MX"'
 				})
 				let e2 = Experiment.create({
 					id: 'bar-id',
 					name: 'e2',
 					variations,
-					targeting: { geo: { matcher: 'isExactly', value: 'MX' } }
+					targeting: '_.geo ==="MX"'
 				})
 
 				container.add(e1, e2)
@@ -243,13 +247,13 @@ describe('ExperimentContainer is a container for experiments', () => {
 					id: 'foo-id',
 					name: 'e1',
 					variations,
-					targeting: { geo: { matcher: 'isExactly', value: 'MX' } }
+					targeting: '_.geo ==="MX"'
 				})
 				let e2 = Experiment.create({
 					id: 'bar-id',
 					name: 'e2',
 					variations,
-					targeting: { geo: { matcher: 'isExactly', value: 'MX' } }
+					targeting: '_.geo ==="MX"'
 				})
 
 				container.add(Variation.create({ object: e1, weight: 20 }), Variation.create({ object: e2, weight: 80 }))
@@ -282,7 +286,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 							{ object: 2 },
 							{ object: 3 }
 						],
-						targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+						targeting: '_.geo ==="US"'
 					}
 				},
 				{
@@ -294,7 +298,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 							{ object: 2 },
 							{ object: 3 }
 						],
-						targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+						targeting: '_.geo ==="US"'
 					}
 				}
 			]
@@ -312,7 +316,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 						{ object: 2, weight: 1 },
 						{ object: 3, weight: 1 }
 					],
-					targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+					targeting: '_.geo ==="US"'
 				},
 				weight: 1
 			}, {
@@ -324,7 +328,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 						{ object: 2, weight: 1 },
 						{ object: 3, weight: 1 }
 					],
-					targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+					targeting: '_.geo ==="US"'
 				},
 				weight: 1
 			}])
@@ -342,7 +346,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 							{ object: 2 },
 							{ object: 3 }
 						],
-						targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+						targeting: '_.geo ==="US"'
 					}
 				},
 				{
@@ -354,7 +358,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 							{ object: 2 },
 							{ object: 3 }
 						],
-						targeting: { geo: { matcher: 'isExactly', value: 'US' } }
+						targeting: '_.geo ==="US"'
 					}
 				}
 			]

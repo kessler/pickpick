@@ -1,6 +1,6 @@
 # Experiments Engine
 
-A/B testing engine (aka experiments)
+A/B testing engine
 
 ## Quick and dirty example
 

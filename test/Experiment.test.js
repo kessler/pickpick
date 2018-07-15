@@ -86,12 +86,7 @@ describe('Experiment picks a variation', () => {
 			{ object: 3 }
 		]
 
-		let targeting = {
-			geo: {
-				matcher: 'isExactly',
-				value: 'US'
-			}
-		}
+		let targeting = '_.geo === "US"'
 
 		let experiment = Experiment.create({ id: 'foo-id', targeting, variations, name: 'test' })
 		let json = experiment.toJSON(experiment)
@@ -102,9 +97,8 @@ describe('Experiment picks a variation', () => {
 			{ object: 3, weight: 1 }
 		])
 
-		expect(json).to.have.deep.property('targeting', { geo: { matcher: 'isExactly', value: 'US' } })
+		expect(json).to.have.deep.property('targeting', '_.geo === "US"')
 		expect(json).to.have.property('name', 'test')
-
 		expect(JSON.stringify(experiment)).to.equal(JSON.stringify(json))
 	})
 
@@ -115,12 +109,7 @@ describe('Experiment picks a variation', () => {
 			{ object: 3 }
 		]
 
-		let targeting = {
-			geo: {
-				matcher: 'isExactly',
-				value: 'US'
-			}
-		}
+		let targeting = '_.geo === "US"'
 
 		let experiment = Experiment.create({ id: 'foo-id', targeting, variations, name: 'test' })
 		let json = JSON.stringify(experiment)
@@ -135,13 +124,8 @@ describe('Experiment picks a variation', () => {
 			Variation.create({ object: 3, weight: 1 })
 		])
 
-		expect(deserializedExperiment.targeting).to.deep.equal(Targeting.create({
-				geo: {
-					matcher: 'isExactly',
-					value: 'US'
-				}
-			}
-		))
+		expect(deserializedExperiment.targeting.expression).to.equal('_.geo === "US"')
+		expect(deserializedExperiment.targeting.match({ geo: 'US'})).to.be.true
 	})
 
 	beforeEach(() => {
