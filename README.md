@@ -2,17 +2,23 @@
 
 An A/B testing engine for the web
 
-## Quick and dirty example
+To use this engine, create one or more experiments and stick them in a container. Each experiment is composed of a bunch of variations which are randomly picked/served to you. Once you obtain a variation, use it to render some content or make some sort of a decision.
+
+The container's job is to select the correct experiments for each `visitor` based on each experiment's targeting expression. So to get a variation one would call `pick()` twice, once on the container and once on the experiment.
+
+Further information regarding the targeting experssion syntax can be found here: [pickpick-targeting-compiler](https://github.com/ironSource/pickpick-targeting-compiler)
+
+Also, please take a look at our [examples](./examples)
+
+## example
+
+`npm i -S pickpick`
 
 Let's say we have a website with two pages `buy` and `index` and we want to run 3 experiments:
 
 -   on the `buy` page test `color button`
 -   on the `buy` page test `price`
 -   on the `index` page test `text`
-
-### example:
-
-`npm i -S pickpick`
 
 ```js
 const { Experiment, ExperimentContainer } = require('pickpick')
@@ -27,7 +33,7 @@ let e1 = Experiment.create({
 		{ object: '#ff0000', weight: 1 },
 		{ object: '#00ff00', weight: 1 }
 	],
-	targeting: '_.page in ["buy", "index"]'
+	targeting: '_.path in ["buy", "index"]'
 })
 
 let e2 = Experiment.create({
@@ -38,7 +44,7 @@ let e2 = Experiment.create({
 		{ object: 35 },
 		{ object: 45 }
 	],
-	targeting: '_.page !== "home" && page !== "flex"'
+	targeting: '_.path !== "home" && page !== "foo"'
 })
 
 let e3 = Experiment.create({
@@ -49,7 +55,7 @@ let e3 = Experiment.create({
 		{ object: 'hello' },
 		{ object: 'welcome' }
 	],
-	targeting: '_.page === "index"'
+	targeting: '_.path === "index"'
 })
 
 // now create a container:
