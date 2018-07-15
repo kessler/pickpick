@@ -47,7 +47,7 @@ let e3 = Experiment.create({
 		{ object: 'hello' },
 		{ object: 'welcome' }
 	],
-	targeting: '_.page === "index"''
+	targeting: '_.page === "index"'
 })
 
 // now create a container:
