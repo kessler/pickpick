@@ -1,6 +1,6 @@
 {
   "name": "pickpick",
-  "version": "5.0.3",
+  "version": "5.0.4",
   "description": "an A/B testing engine for the web",
   "main": "index.js",
   "scripts": {
