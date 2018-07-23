@@ -1,12 +1,12 @@
 # pickpick
 
-An A/B testing engine for the web
+An A/B testing engine
 
 To use this engine, create one or more experiments and stick them in a container. Each experiment is composed of a bunch of variations which are randomly picked/served to you. Once you obtain a variation, use it to render some content or make some sort of a decision.
 
 The container's job is to select the correct experiments for each `visitor` based on each experiment's targeting expression. Thusly, to get a variation one would call `pick()` twice, once on the container and once on the experiment.
 
-Further information regarding the targeting experssion syntax can be found here: [pickpick-targeting-compiler](https://github.com/ironSource/pickpick-targeting-compiler)
+Further information about the targeting experssion syntax can be found here: [pickpick-targeting-compiler](https://github.com/ironSource/pickpick-targeting-compiler)
 
 Also, please take a look at our [examples](./examples)
 
