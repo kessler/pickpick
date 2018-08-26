@@ -3,7 +3,7 @@ jobs:
     build:
         docker:
             - image: circleci/node:8.11.4-jessie
-        working_directory: ~/pickpick`
+        working_directory: ~/pickpick
         steps:
             - checkout
             - restore_cache:
