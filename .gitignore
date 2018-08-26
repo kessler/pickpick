@@ -14,5 +14,6 @@ results
 coverage
 npm-debug.log
 node_modules
+artifacts
 
 .yo-rc.json
