@@ -14,7 +14,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			expect(experiments[0]).to.deep.equal(e1)
 		})
 
-		it('and an instance of Variation containing an experiment instance as it\'s object', () => {
+		it("and an instance of Variation containing an experiment instance as it's object", () => {
 			let e1 = Experiment.create({ id: 'foo-id', variations })
 			let v1 = Variation.create({ object: e1, weight: 2 })
 			container.add(v1)
@@ -24,7 +24,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 		})
 
 		// TODO this test is terrible
-		it('and an instance of Variation containing an experiment object literal as it\'s object', () => {
+		it("and an instance of Variation containing an experiment object literal as it's object", () => {
 			let e1 = { id: 'foo-id', variations }
 			let v1 = Variation.create({ object: e1, weight: 2 })
 			container.add(v1)
@@ -51,7 +51,11 @@ describe('ExperimentContainer is a container for experiments', () => {
 			variations,
 			targeting: '_.page === "buy"'
 		})
-		let e2 = Experiment.create({ id: 'bar-id', variations, targeting: '_.geo === "MX"' })
+		let e2 = Experiment.create({
+			id: 'bar-id',
+			variations,
+			targeting: '_.geo === "MX"'
+		})
 
 		container.add(e1, e2)
 		let targetingFeatures = Array.from(container.targetingFeatures)
@@ -87,22 +91,14 @@ describe('ExperimentContainer is a container for experiments', () => {
 			e1 = Experiment.create({
 				id: 'foo-id',
 				name: 'foo',
-				variations: [
-					{ object: 1 },
-					{ object: 2 },
-					{ object: 3 }
-				],
+				variations: [{ object: 1 }, { object: 2 }, { object: 3 }],
 				targeting: '_.page === "buy"'
 			})
 
 			e2 = Experiment.create({
 				id: 'bar-id',
 				name: 'bar',
-				variations: [
-					{ object: 1 },
-					{ object: 2 },
-					{ object: 3 }
-				],
+				variations: [{ object: 1 }, { object: 2 }, { object: 3 }],
 				targeting: '_.geo ==="MX"'
 			})
 
@@ -111,46 +107,33 @@ describe('ExperimentContainer is a container for experiments', () => {
 			e3 = Experiment.create({
 				id: 'roo-id',
 				name: 'roo',
-				variations: [
-					{ object: 1 },
-					{ object: 2 },
-					{ object: 3 }
-				],
+				variations: [{ object: 1 }, { object: 2 }, { object: 3 }],
 				targeting: '_.geo ==="FR"'
 			})
 
 			e4 = Experiment.create({
 				id: 'goo-id',
 				name: 'goo',
-				variations: [
-					{ object: 1 },
-					{ object: 2 },
-					{ object: 3 }
-				],
+				variations: [{ object: 1 }, { object: 2 }, { object: 3 }],
 				targeting: '_.geo ==="BR"'
 			})
 
-			container.add(Variation.create({ object: e3, weight: 20 }), Variation.create({ object: e4, weight: 80 }))
+			container.add(
+				Variation.create({ object: e3, weight: 20 }),
+				Variation.create({ object: e4, weight: 80 })
+			)
 
 			e5 = Experiment.create({
 				id: 'zoo-id',
 				name: 'zoo',
-				variations: [
-					{ object: 1 },
-					{ object: 2 },
-					{ object: 3 }
-				],
+				variations: [{ object: 1 }, { object: 2 }, { object: 3 }],
 				targeting: '_.geo ==="IT"'
 			})
 
 			e6 = {
 				id: 'boo-id',
 				name: 'boo',
-				variations: [
-					{ object: 1 },
-					{ object: 2 },
-					{ object: 3 }
-				],
+				variations: [{ object: 1 }, { object: 2 }, { object: 3 }],
 				targeting: '_.geo ==="US"'
 			}
 		})
@@ -177,13 +160,15 @@ describe('ExperimentContainer is a container for experiments', () => {
 			container.add(e1, e2)
 		}).to.throw()
 		expect(() => {
-			container.add(Variation.create({ object: e1, weight: 20 }), Variation.create({ object: e2, weight: 80 }))
+			container.add(
+				Variation.create({ object: e1, weight: 20 }),
+				Variation.create({ object: e2, weight: 80 })
+			)
 		}).to.throw()
 	})
 
 	describe('that lets a user pick an experiment that matches a targeting experssion', () => {
 		it('using the pick(targeting) method', () => {
-
 			let e1 = Experiment.create({
 				id: 'foo-id',
 				variations,
@@ -210,7 +195,6 @@ describe('ExperimentContainer is a container for experiments', () => {
 
 		describe('when more then one experiment matches the targeting expression', () => {
 			it('the container will select the result randomly', () => {
-
 				let e1 = Experiment.create({
 					id: 'foo-id',
 					name: 'e1',
@@ -242,7 +226,6 @@ describe('ExperimentContainer is a container for experiments', () => {
 			})
 
 			it('the container will select the result randomly, but with predefined bias', () => {
-
 				let e1 = Experiment.create({
 					id: 'foo-id',
 					name: 'e1',
@@ -256,7 +239,10 @@ describe('ExperimentContainer is a container for experiments', () => {
 					targeting: '_.geo ==="MX"'
 				})
 
-				container.add(Variation.create({ object: e1, weight: 20 }), Variation.create({ object: e2, weight: 80 }))
+				container.add(
+					Variation.create({ object: e1, weight: 20 }),
+					Variation.create({ object: e2, weight: 80 })
+				)
 
 				let counter = new Counter()
 				let visitor = { geo: 'MX' }
@@ -277,7 +263,8 @@ describe('ExperimentContainer is a container for experiments', () => {
 
 	describe('serialization/deserialization to json', () => {
 		it('serializes to json', () => {
-			let experiments = [{
+			let experiments = [
+				{
 					object: {
 						name: 'e1',
 						id: 'foo-id',
@@ -307,37 +294,43 @@ describe('ExperimentContainer is a container for experiments', () => {
 
 			let json = container.toJSON()
 
-			expect(json).to.have.deep.property('experiments', [{
-				object: {
-					name: 'e1',
-					id: 'foo-id',
-					variations: [
-						{ object: 1, weight: 1 },
-						{ object: 2, weight: 1 },
-						{ object: 3, weight: 1 }
-					],
-					targeting: '_.geo ==="US"'
+			expect(json).to.have.deep.property('experiments', [
+				{
+					object: {
+						name: 'e1',
+						id: 'foo-id',
+						variations: [
+							{ object: 1, weight: 1 },
+							{ object: 2, weight: 1 },
+							{ object: 3, weight: 1 }
+						],
+						targeting: '_.geo ==="US"'
+					},
+					weight: 1
 				},
-				weight: 1
-			}, {
-				object: {
-					name: 'e2',
-					id: 'bar-id',
-					variations: [
-						{ object: 1, weight: 1 },
-						{ object: 2, weight: 1 },
-						{ object: 3, weight: 1 }
-					],
-					targeting: '_.geo ==="US"'
-				},
-				weight: 1
-			}])
+				{
+					object: {
+						name: 'e2',
+						id: 'bar-id',
+						variations: [
+							{ object: 1, weight: 1 },
+							{ object: 2, weight: 1 },
+							{ object: 3, weight: 1 }
+						],
+						targeting: '_.geo ==="US"'
+					},
+					weight: 1
+				}
+			])
 
-			expect(JSON.stringify(json)).to.deep.equal(JSON.stringify(container))
+			expect(JSON.stringify(json)).to.deep.equal(
+				JSON.stringify(container)
+			)
 		})
 
 		it('deserializes from json', () => {
-			let experiments = [{
+			let experiments = [
+				{
 					object: {
 						name: 'e1',
 						id: 'foo-id',
@@ -372,10 +365,6 @@ describe('ExperimentContainer is a container for experiments', () => {
 
 	beforeEach(() => {
 		container = ExperimentContainer.create({}) // seed is used for testing purposes only
-		variations = [
-			{ object: 1 },
-			{ object: 2 },
-			{ object: 3 }
-		]
+		variations = [{ object: 1 }, { object: 2 }, { object: 3 }]
 	})
 })
