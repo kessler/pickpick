@@ -4,6 +4,7 @@
   "description": "an A/B testing engine for the web",
   "main": "index.js",
   "scripts": {
+    "precommit": "lint-staged",
     "format": "./node_modules/prettier-eslint-cli/dist/index.js --write {lib,test,examples,proto}/**/*.js--tab-width 4 --use-tabs true --print-width 120",
     "docs": "documentation readme index.js --section=API -g",
     "test": "nyc mocha test/*",
