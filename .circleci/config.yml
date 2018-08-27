@@ -22,7 +22,7 @@ jobs:
                   name: Tests
                   command: npm run test:ci
             - store_test_results:
-                  path: ~/pickpick/artifacts
+                  path: ~/pickpick/results
             - run:
                   name: Report Coverage
                   command: npm run report-coverage
