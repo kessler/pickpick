@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "precommit": "lint-staged",
-    "format": "./node_modules/prettier-eslint-cli/dist/index.js --write {lib,test,examples,proto}/**/*.js--tab-width 4 --use-tabs true --print-width 120",
+    "format": "./node_modules/prettier-eslint-cli/dist/index.js --write '{lib,test,examples,proto}/**/*.js'",
     "docs": "documentation readme index.js --section=API -g",
     "test": "nyc mocha test/*",
     "test:ci": "MOCHA_FILE=./results/test-results.xml nyc mocha test/* --reporter mocha-junit-reporter",
@@ -40,7 +40,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "./node_modules/prettier-eslint-cli/dist/index.js --write {lib,test,examples,proto}/**/*.js--tab-width 4 --use-tabs true --print-width 120",
+      "./node_modules/prettier-eslint-cli/dist/index.js --write '{lib,test,examples,proto}/**/*.js'",
       "git add"
     ]
   }

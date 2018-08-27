@@ -9,7 +9,9 @@ describe('Targeting is a logical expression designed to help target relevant exp
 	})
 
 	it('exposes features an iterator', () => {
-		let targeting = Targeting.create('_.geo === "foo" && _.page in ["bar", "index"]')
+		let targeting = Targeting.create(
+			'_.geo === "foo" && _.page in ["bar", "index"]'
+		)
 		let features = Array.from(targeting)
 		expect(features).to.eql(['geo', 'page'])
 	})
@@ -38,8 +40,7 @@ describe('Targeting is a logical expression designed to help target relevant exp
 			expect(targeting.match({})).to.be.true
 			expect(targeting.match(false)).to.be.true
 			expect(targeting.match(true)).to.be.true
-			expect(targeting.match(() => {
-			})).to.be.true
+			expect(targeting.match(() => {})).to.be.true
 			expect(targeting.match('1ajsdhs')).to.be.true
 			expect(targeting.match({ bla: 'bla' })).to.be.true
 		})
