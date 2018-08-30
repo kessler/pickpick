@@ -2,6 +2,10 @@
 
 An A/B testing engine
 
+[![CircleCI](https://img.shields.io/circleci/project/github/ironSource/pickpick.svg)](https://circleci.com/gh/ironSource/pickpick)
+[![Coverage Status](https://coveralls.io/repos/github/ironSource/pickpick/badge.svg?branch=master)](https://coveralls.io/github/ironSource/pickpick?branch=master)
+[![npm latest version](https://img.shields.io/npm/v/pickpick.svg)](https://www.npmjs.com/package/pickpick)
+
 To use this engine, create one or more experiments and stick them in a container. Each experiment is composed of a bunch of variations which are randomly picked/served to you. Once you obtain a variation, use it to render some content or make some sort of a decision.
 
 The container's job is to select the correct experiments for each `visitor` based on each experiment's targeting expression. Thusly, to get a variation one would call `pick()` twice, once on the container and once on the experiment.

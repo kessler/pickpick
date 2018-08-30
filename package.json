@@ -4,9 +4,18 @@
   "description": "an A/B testing engine for the web",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/*"
+    "precommit": "lint-staged",
+    "format": "./node_modules/prettier-eslint-cli/dist/index.js --write '{lib,test,examples,proto}/**/*.js'",
+    "docs": "documentation readme index.js --section=API -g",
+    "test": "nyc mocha test/*",
+    "test:ci": "MOCHA_FILE=./results/test-results.xml nyc mocha test/* --reporter mocha-junit-reporter",
+    "report-coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "author": "Yaniv Kessler",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ironSource/pickpick.git"
+  },
   "license": "MIT",
   "dependencies": {
     "debug": "^2.6.8",
@@ -19,6 +28,20 @@
   },
   "devDependencies": {
     "chai": "^4.0.2",
-    "express": "^4.16.3"
+    "coveralls": "^3.0.2",
+    "documentation": "^8.1.2",
+    "express": "^4.16.3",
+    "husky": "^0.14.3",
+    "lint-staged": "^7.2.2",
+    "mocha": "^5.2.0",
+    "mocha-junit-reporter": "^1.18.0",
+    "nyc": "^12.0.2",
+    "prettier-eslint-cli": "^4.7.1"
+  },
+  "lint-staged": {
+    "*.js": [
+      "./node_modules/prettier-eslint-cli/dist/index.js --write '{lib,test,examples,proto}/**/*.js'",
+      "git add"
+    ]
   }
 }
