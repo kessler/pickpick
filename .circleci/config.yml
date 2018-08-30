@@ -23,6 +23,6 @@ jobs:
                   command: npm run test:ci
             - store_test_results:
                   path: ~/pickpick/results
-            # - run:
-            #       name: Report Coverage
-            #       command: npm run report-coverage
+            - run:
+                  name: Report Coverage
+                  command: npm run report-coverage
