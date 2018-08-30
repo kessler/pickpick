@@ -1,0 +1,28 @@
+version: 2
+jobs:
+    build:
+        docker:
+            - image: circleci/node:8.11.4-jessie
+        working_directory: ~/pickpick
+        steps:
+            - checkout
+            - restore_cache:
+                  keys:
+                      - v1-dependencies-{{ checksum "package.json" }}
+                      # fallback to using the latest cache if no exact match is found
+                      - v1-dependencies-
+            - run:
+                  name: Install
+                  command: npm install
+            - save_cache:
+                  paths:
+                      - node_modules
+                  key: v1-dependencies-{{ checksum "package.json" }}
+            - run:
+                  name: Tests
+                  command: npm run test:ci
+            - store_test_results:
+                  path: ~/pickpick/results
+            - run:
+                  name: Report Coverage
+                  command: npm run report-coverage
