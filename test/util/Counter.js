@@ -22,12 +22,12 @@ class Counter {
 
 	toString() {
 		let spaceSize = 40
-		let result = `### ${this._name}\n` 
+		let result = `### ${this._name}\n`
 		result += `value${spaces(spaceSize - 5)}count\n`
 		let keys = Array.from(this._data.keys()).sort()
 
 		for (let val of keys) {
-			let text = typeof(val) === 'object' ? JSON.stringify(val) : val
+			let text = typeof val === 'object' ? JSON.stringify(val) : val
 			let len = spaceSize - (text.length || 1)
 			let count = this._data.get(val)
 			result += `${text}${spaces(len)}${count}\n`

@@ -39,7 +39,7 @@ class Container {
 		// seed is for testing purposes
 		let engine = loadbalance.random(candidates, this._seed)
 
-		return engine.pick()	
+		return engine.pick()
 	}
 }
 
@@ -68,7 +68,7 @@ class Counter {
 		let keys = Array.from(this._data.keys()).sort()
 
 		for (let val of keys) {
-			let text = typeof(val) === 'object' ? JSON.stringify(val) : val
+			let text = typeof val === 'object' ? JSON.stringify(val) : val
 			let len = spaceSize - (text.length || 1)
 			let count = this._data.get(val)
 			result += `${text}${spaces(len)}${count}\n`
@@ -83,7 +83,10 @@ function run() {
 
 	let e1 = Experiment.create({
 		variations: [5, 6],
-		targeting: Targeting.create({ page: 'buy', geo: isIn([ 'US', 'MX', 'IL' ]) })
+		targeting: Targeting.create({
+			page: 'buy',
+			geo: isIn(['US', 'MX', 'IL'])
+		})
 	})
 
 	let e2 = Experiment.create({
@@ -115,7 +118,7 @@ function run() {
 
 	for (let i = 0; i < size; i++) {
 		let visitor = traffic.pick()
-		
+
 		let experiment = container.getExperiment(visitor)
 		if (!experiment) {
 			experimentsCounter.count('default')
