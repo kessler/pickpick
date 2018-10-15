@@ -5,6 +5,7 @@ const { Experiment, ExperimentContainer } = require('./index')
 let e1 = Experiment.create({
 	name: 'buy page button color experiment',
 	id: '953d6fe0',
+	// prettier-ignore
 	variations: [
 		{ object: '#ff0000', weight: 4 },
 		{ object: '#ff0000', weight: 1 },
@@ -16,6 +17,7 @@ let e1 = Experiment.create({
 let e2 = Experiment.create({
 	name: 'buy page price experiment',
 	id: 'a40f09ac',
+	// prettier-ignore
 	variations: [
 		{ object: 25 },
 		{ object: 35 },
@@ -27,6 +29,7 @@ let e2 = Experiment.create({
 let e3 = Experiment.create({
 	name: 'index text experiment',
 	id: 'ac49ef42',
+	// prettier-ignore
 	variations: [
 		{ object: 'hi' },
 		{ object: 'hello' },
@@ -49,7 +52,6 @@ for (let i = 0; i < 10; i++) {
 		// handle this with defaults
 		console.log('default goes here')
 	} else {
-
 		console.log(`selected experiment '${experiment.name}' for '${JSON.stringify(visitor)}'`)
 		let variation = experiment.pick()
 		console.log(`selected variation is ${variation}`)

@@ -38,8 +38,7 @@ describe('Targeting is a logical expression designed to help target relevant exp
 			expect(targeting.match({})).to.be.true
 			expect(targeting.match(false)).to.be.true
 			expect(targeting.match(true)).to.be.true
-			expect(targeting.match(() => {
-			})).to.be.true
+			expect(targeting.match(() => {})).to.be.true
 			expect(targeting.match('1ajsdhs')).to.be.true
 			expect(targeting.match({ bla: 'bla' })).to.be.true
 		})
