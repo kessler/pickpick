@@ -16,14 +16,22 @@ let e1 = Experiment.create({
 let e2 = Experiment.create({
 	name: 'buy page price experiment',
 	id: 'a40f09ac',
-	variations: [{ object: 25 }, { object: 35 }, { object: 45 }],
+	variations: [
+		{ object: 25 },
+		{ object: 35 },
+		{ object: 45 }
+	],
 	targeting: '_.page !== "home" && _.page !=="about"'
 })
 
 let e3 = Experiment.create({
 	name: 'index text experiment',
 	id: 'ac49ef42',
-	variations: [{ object: 'hi' }, { object: 'hello' }, { object: 'welcome' }],
+	variations: [
+		{ object: 'hi' },
+		{ object: 'hello' },
+		{ object: 'welcome' }
+	],
 	targeting: '_.page === "index"'
 })
 
@@ -41,11 +49,8 @@ for (let i = 0; i < 10; i++) {
 		// handle this with defaults
 		console.log('default goes here')
 	} else {
-		console.log(
-			`selected experiment '${experiment.name}' for '${JSON.stringify(
-				visitor
-			)}'`
-		)
+
+		console.log(`selected experiment '${experiment.name}' for '${JSON.stringify(visitor)}'`)
 		let variation = experiment.pick()
 		console.log(`selected variation is ${variation}`)
 	}

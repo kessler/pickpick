@@ -7,6 +7,7 @@ describe('Experiment picks a variation', () => {
 	let traffic, variationCounter, visitorCounter
 
 	it('based on even weights', () => {
+
 		let experiment = Experiment.create({
 			id: 'foo-id',
 			variations: [
@@ -56,7 +57,7 @@ describe('Experiment picks a variation', () => {
 				weight: 3
 			}
 		]
-
+		
 		let experiment = Experiment.create({ id: 'foo-id', variations })
 		let experimentVariations = Array.from(experiment)
 		// the order of the variations is not static
@@ -79,16 +80,15 @@ describe('Experiment picks a variation', () => {
 	})
 
 	it('can be serialized into json', () => {
-		let variations = [{ object: 1 }, { object: 2 }, { object: 3 }]
+		let variations = [
+			{ object: 1 },
+			{ object: 2 },
+			{ object: 3 }
+		]
 
 		let targeting = '_.geo === "US"'
 
-		let experiment = Experiment.create({
-			id: 'foo-id',
-			targeting,
-			variations,
-			name: 'test'
-		})
+		let experiment = Experiment.create({ id: 'foo-id', targeting, variations, name: 'test' })
 		let json = experiment.toJSON(experiment)
 
 		expect(json).to.have.deep.property('variations', [
@@ -103,16 +103,15 @@ describe('Experiment picks a variation', () => {
 	})
 
 	it('can be deserialized from json', () => {
-		let variations = [{ object: 1 }, { object: 2 }, { object: 3 }]
+		let variations = [
+			{ object: 1 },
+			{ object: 2 },
+			{ object: 3 }
+		]
 
 		let targeting = '_.geo === "US"'
 
-		let experiment = Experiment.create({
-			id: 'foo-id',
-			targeting,
-			variations,
-			name: 'test'
-		})
+		let experiment = Experiment.create({ id: 'foo-id', targeting, variations, name: 'test' })
 		let json = JSON.stringify(experiment)
 
 		let deserializedExperiment = Experiment.create(JSON.parse(json))
@@ -125,10 +124,8 @@ describe('Experiment picks a variation', () => {
 			Variation.create({ object: 3, weight: 1 })
 		])
 
-		expect(deserializedExperiment.targeting.expression).to.equal(
-			'_.geo === "US"'
-		)
-		expect(deserializedExperiment.targeting.match({ geo: 'US' })).to.be.true
+		expect(deserializedExperiment.targeting.expression).to.equal('_.geo === "US"')
+		expect(deserializedExperiment.targeting.match({ geo: 'US'})).to.be.true
 	})
 
 	beforeEach(() => {
