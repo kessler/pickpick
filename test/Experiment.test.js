@@ -7,9 +7,9 @@ describe('Experiment picks a variation', () => {
 	let traffic, variationCounter, visitorCounter
 
 	it('based on even weights', () => {
-
 		let experiment = Experiment.create({
 			id: 'foo-id',
+			// prettier-ignore
 			variations: [
 				{ object: 1, weight: 1 },
 				{ object: 2, weight: 1 },
@@ -57,7 +57,7 @@ describe('Experiment picks a variation', () => {
 				weight: 3
 			}
 		]
-		
+
 		let experiment = Experiment.create({ id: 'foo-id', variations })
 		let experimentVariations = Array.from(experiment)
 		// the order of the variations is not static
@@ -80,6 +80,7 @@ describe('Experiment picks a variation', () => {
 	})
 
 	it('can be serialized into json', () => {
+		// prettier-ignore
 		let variations = [
 			{ object: 1 },
 			{ object: 2 },
@@ -103,6 +104,7 @@ describe('Experiment picks a variation', () => {
 	})
 
 	it('can be deserialized from json', () => {
+		// prettier-ignore
 		let variations = [
 			{ object: 1 },
 			{ object: 2 },
@@ -125,7 +127,7 @@ describe('Experiment picks a variation', () => {
 		])
 
 		expect(deserializedExperiment.targeting.expression).to.equal('_.geo === "US"')
-		expect(deserializedExperiment.targeting.match({ geo: 'US'})).to.be.true
+		expect(deserializedExperiment.targeting.match({ geo: 'US' })).to.be.true
 	})
 
 	beforeEach(() => {

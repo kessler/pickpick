@@ -14,7 +14,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			expect(experiments[0]).to.deep.equal(e1)
 		})
 
-		it('and an instance of Variation containing an experiment instance as it\'s object', () => {
+		it("and an instance of Variation containing an experiment instance as it's object", () => {
 			let e1 = Experiment.create({ id: 'foo-id', variations })
 			let v1 = Variation.create({ object: e1, weight: 2 })
 			container.add(v1)
@@ -24,7 +24,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 		})
 
 		// TODO this test is terrible
-		it('and an instance of Variation containing an experiment object literal as it\'s object', () => {
+		it("and an instance of Variation containing an experiment object literal as it's object", () => {
 			let e1 = { id: 'foo-id', variations }
 			let v1 = Variation.create({ object: e1, weight: 2 })
 			container.add(v1)
@@ -87,6 +87,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			e1 = Experiment.create({
 				id: 'foo-id',
 				name: 'foo',
+				// prettier-ignore
 				variations: [
 					{ object: 1 },
 					{ object: 2 },
@@ -98,6 +99,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			e2 = Experiment.create({
 				id: 'bar-id',
 				name: 'bar',
+				// prettier-ignore
 				variations: [
 					{ object: 1 },
 					{ object: 2 },
@@ -111,6 +113,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			e3 = Experiment.create({
 				id: 'roo-id',
 				name: 'roo',
+				// prettier-ignore
 				variations: [
 					{ object: 1 },
 					{ object: 2 },
@@ -122,6 +125,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			e4 = Experiment.create({
 				id: 'goo-id',
 				name: 'goo',
+				// prettier-ignore
 				variations: [
 					{ object: 1 },
 					{ object: 2 },
@@ -135,6 +139,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			e5 = Experiment.create({
 				id: 'zoo-id',
 				name: 'zoo',
+				// prettier-ignore
 				variations: [
 					{ object: 1 },
 					{ object: 2 },
@@ -146,6 +151,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 			e6 = {
 				id: 'boo-id',
 				name: 'boo',
+				// prettier-ignore
 				variations: [
 					{ object: 1 },
 					{ object: 2 },
@@ -183,7 +189,6 @@ describe('ExperimentContainer is a container for experiments', () => {
 
 	describe('that lets a user pick an experiment that matches a targeting experssion', () => {
 		it('using the pick(targeting) method', () => {
-
 			let e1 = Experiment.create({
 				id: 'foo-id',
 				variations,
@@ -210,7 +215,6 @@ describe('ExperimentContainer is a container for experiments', () => {
 
 		describe('when more then one experiment matches the targeting expression', () => {
 			it('the container will select the result randomly', () => {
-
 				let e1 = Experiment.create({
 					id: 'foo-id',
 					name: 'e1',
@@ -242,7 +246,6 @@ describe('ExperimentContainer is a container for experiments', () => {
 			})
 
 			it('the container will select the result randomly, but with predefined bias', () => {
-
 				let e1 = Experiment.create({
 					id: 'foo-id',
 					name: 'e1',
@@ -277,10 +280,12 @@ describe('ExperimentContainer is a container for experiments', () => {
 
 	describe('serialization/deserialization to json', () => {
 		it('serializes to json', () => {
-			let experiments = [{
+			let experiments = [
+				{
 					object: {
 						name: 'e1',
 						id: 'foo-id',
+						// prettier-ignore
 						variations: [
 							{ object: 1 },
 							{ object: 2 },
@@ -293,6 +298,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 					object: {
 						name: 'e2',
 						id: 'bar-id',
+						// prettier-ignore
 						variations: [
 							{ object: 1 },
 							{ object: 2 },
@@ -307,40 +313,47 @@ describe('ExperimentContainer is a container for experiments', () => {
 
 			let json = container.toJSON()
 
-			expect(json).to.have.deep.property('experiments', [{
-				object: {
-					name: 'e1',
-					id: 'foo-id',
-					variations: [
-						{ object: 1, weight: 1 },
-						{ object: 2, weight: 1 },
-						{ object: 3, weight: 1 }
-					],
-					targeting: '_.geo ==="US"'
+			expect(json).to.have.deep.property('experiments', [
+				{
+					object: {
+						name: 'e1',
+						id: 'foo-id',
+						// prettier-ignore
+						variations: [
+							{ object: 1, weight: 1 },
+							{ object: 2, weight: 1 },
+							{ object: 3, weight: 1 }
+						],
+						targeting: '_.geo ==="US"'
+					},
+					weight: 1
 				},
-				weight: 1
-			}, {
-				object: {
-					name: 'e2',
-					id: 'bar-id',
-					variations: [
-						{ object: 1, weight: 1 },
-						{ object: 2, weight: 1 },
-						{ object: 3, weight: 1 }
-					],
-					targeting: '_.geo ==="US"'
-				},
-				weight: 1
-			}])
+				{
+					object: {
+						name: 'e2',
+						id: 'bar-id',
+						// prettier-ignore
+						variations: [
+							{ object: 1, weight: 1 },
+							{ object: 2, weight: 1 },
+							{ object: 3, weight: 1 }
+						],
+						targeting: '_.geo ==="US"'
+					},
+					weight: 1
+				}
+			])
 
 			expect(JSON.stringify(json)).to.deep.equal(JSON.stringify(container))
 		})
 
 		it('deserializes from json', () => {
-			let experiments = [{
+			let experiments = [
+				{
 					object: {
 						name: 'e1',
 						id: 'foo-id',
+						// prettier-ignore
 						variations: [
 							{ object: 1 },
 							{ object: 2 },
@@ -353,6 +366,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 					object: {
 						name: 'e2',
 						id: 'bar-id',
+						// prettier-ignore
 						variations: [
 							{ object: 1 },
 							{ object: 2 },
@@ -372,6 +386,7 @@ describe('ExperimentContainer is a container for experiments', () => {
 
 	beforeEach(() => {
 		container = ExperimentContainer.create({}) // seed is used for testing purposes only
+		//prettier-ignore
 		variations = [
 			{ object: 1 },
 			{ object: 2 },
