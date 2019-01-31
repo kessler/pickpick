@@ -72,5 +72,16 @@ describe('Targeting is a logical expression designed to help target relevant exp
 			expect(targeting.match(true)).to.be.false
 			expect(targeting.match({ f1: 'f1' })).to.be.false
 		})
+		describe('custom userEnvironment', () => {
+			let userEnvironment = {
+				isOk: (arg) => {
+					return arg.startsWith('f')
+				}
+			}
+			it('match and test', () => {
+				let targeting = Targeting.create('$.isOk(_.arg)', { userEnvironment })
+				expect(targeting.match({ arg: 'foo'})).to.be.true
+			})
+		})
 	})
 })

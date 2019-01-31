@@ -7,7 +7,7 @@
     "precommit": "lint-staged",
     "format": "./node_modules/prettier-eslint-cli/dist/index.js --write '{lib,test,examples,proto}/**/*.js'",
     "docs": "documentation readme index.js --section=API -g",
-    "test": "nyc mocha test/*",
+    "test": "mocha test/*",
     "test:ci": "MOCHA_FILE=./results/test-results.xml nyc mocha test/* --reporter mocha-junit-reporter",
     "report-coverage": "nyc report --reporter=text-lcov | coveralls"
   },
@@ -24,6 +24,7 @@
     "later": "^1.2.0",
     "loadbalance": "^0.3.0",
     "lodash": "^4.17.4",
+    "mocha": "^5.2.0",
     "pickpick-targeting-compiler": "0.2.0"
   },
   "devDependencies": {
