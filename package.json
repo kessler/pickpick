@@ -24,6 +24,7 @@
     "later": "^1.2.0",
     "loadbalance": "^0.3.0",
     "lodash": "^4.17.4",
+    "mocha": "^5.2.0",
     "pickpick-targeting-compiler": "0.2.0"
   },
   "devDependencies": {

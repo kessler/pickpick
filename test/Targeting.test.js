@@ -72,5 +72,23 @@ describe('Targeting is a logical expression designed to help target relevant exp
 			expect(targeting.match(true)).to.be.false
 			expect(targeting.match({ f1: 'f1' })).to.be.false
 		})
+		describe('custom userEnvironment', () => {
+			let userEnvironment = {
+				customFn: (str1,str2) => {
+					switch (str1) {
+						case 'ohad':
+							return true
+						case 1:
+							return false
+						case 0:
+							return false
+					}
+				}
+			}
+			it('match and test', () => {
+				let targeting = Targeting.create('$.customFn(_.str1, _.str2)', { userEnvironment })
+				expect(targeting.match({ str1: 'ohad' , str2:'1.2.4'})).to.be.true
+			})
+		})
 	})
 })
