@@ -7,7 +7,7 @@
     "precommit": "lint-staged",
     "format": "./node_modules/prettier-eslint-cli/dist/index.js --write '{lib,test,examples,proto}/**/*.js'",
     "docs": "documentation readme index.js --section=API -g",
-    "test": "nyc mocha test/*",
+    "test": "mocha test/*",
     "test:ci": "MOCHA_FILE=./results/test-results.xml nyc mocha test/* --reporter mocha-junit-reporter",
     "report-coverage": "nyc report --reporter=text-lcov | coveralls"
   },
