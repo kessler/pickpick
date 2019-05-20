@@ -1,7 +1,5 @@
 const loadbalance = require('loadbalance')
 const Targeting = require('./lib/Targeting')
-const Variation = require('./lib/Variation')
-const Trie = require('digital-tree')
 const Experiment = require('./lib/Experiment')
 const { isExactly, isIn, isAny } = require('./lib/matchers')
 

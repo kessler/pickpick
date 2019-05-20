@@ -20,7 +20,6 @@
   "dependencies": {
     "debug": "^2.6.8",
     "deep-equal": "^1.0.1",
-    "digital-tree": "^1.0.1",
     "later": "^1.2.0",
     "loadbalance": "^0.3.0",
     "lodash": "^4.17.4",
@@ -36,7 +35,7 @@
     "lint-staged": "^7.2.2",
     "mocha": "^5.2.0",
     "mocha-junit-reporter": "^1.18.0",
-    "nyc": "^12.0.2",
+    "nyc": "^14.1.1",
     "prettier-eslint-cli": "^4.7.1"
   },
   "lint-staged": {
